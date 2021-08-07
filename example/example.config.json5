@@ -1,0 +1,44 @@
+{
+  "defaultConfigs": {
+    "save": false,
+  },
+  "apis": {
+    "/api/datasets": {
+      "method": "get",
+      // create, read, update, delete
+      "operation": "read",
+      "dataPath": "./oven-data/datasets.json",
+      "readOne": false // default
+    },
+    "/api/users": {
+      // optional, can be also separate for each action
+      "dataPath": "./oven-data/users.json",
+      "get": {
+        // create, read, update, delete
+        "operation": "read",
+        "readOne": false // default
+      },
+      "post": {
+        // create, read, update, delete
+        "operation": "create",
+        // can be provided here too and should override in that case "dataPath": "./oven-data/users.json",
+        "readOne": true,
+        "uidField": {
+          "name": "uid",
+          "type": "string"
+        },
+        "save": false
+      }
+    },
+    "/api/users/:userUid": {
+      "method": "get",
+      // create, read, update, delete
+      "operation": "read",
+      "dataPath": "./oven-data/users.json",
+      "readOne": true,
+      "paramMatch": {
+        "userUid": "uid"
+      }
+    }
+  },
+}
