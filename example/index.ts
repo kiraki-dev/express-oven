@@ -1,10 +1,9 @@
-import generateOvenExpress from 'express-oven';
+import { createExpressOvenRoutes } from 'express-oven';
 import * as express from 'express';
-const config = require("./example.config.json5");
 
 const app = express();
 
-app.use(generateOvenExpress(config));
+app.use(createExpressOvenRoutes());
 
 const port = process.env.PORT || 4469;
 

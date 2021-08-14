@@ -16,9 +16,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "declaration": true
+    "declaration": true,
+    "moduleResolution": "node"
   },
   "files": [
-    "index.ts"
+    "src/index.ts"
   ]
 }

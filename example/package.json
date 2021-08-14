@@ -21,7 +21,7 @@
   "homepage": "https://github.com/hakobpogh/library-package",
   "dependencies": {
     "express": "^4.17.1",
-    "express-oven": "link:../"
+    "express-oven": "link:.."
   },
   "devDependencies": {
     "ts-node": "^9.1.1",
