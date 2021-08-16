@@ -3,12 +3,9 @@ export type HttpMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
 export type IdType = string | number;
 
-// todo: separate CreateOperationConfig and others
-
-export interface OperationConfig {
-  operation?: Operation;
-  readOne?: boolean;
-  uidField?: {
+export interface CreateOperationConfig {
+  operation: 'create';
+  uidField: {
     name: string,
     type: string,
   },
@@ -18,6 +15,17 @@ export interface OperationConfig {
   save?: boolean;
   dataJsonPath?: string;
 }
+
+export interface ReadOperationConfig {
+  operation: 'read';
+  readOne?: boolean;
+  paramMatch?: {
+    [param: string]: string;
+  }
+  dataJsonPath?: string;
+}
+
+export type OperationConfig = CreateOperationConfig | ReadOperationConfig;
 
 export type ApiConfig = Record<string, Partial<Record<HttpMethod, OperationConfig>>>;
 

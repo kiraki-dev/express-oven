@@ -1,4 +1,4 @@
-import { DataAdapterStorage } from '../../dist/utils/create-data-adapter-storage';
+import { DataAdapterStorage } from '../../src/utils/create-data-adapter-storage';
 
 export const getMockDataAdapterStorage = (initialData: any[] = []): DataAdapterStorage => {
   const mockAdapter = {

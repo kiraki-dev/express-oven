@@ -6,7 +6,7 @@ import { DataAdapterStorage } from './utils/create-data-adapter-storage';
 
 export const createRouterForApiMethod = (
   url: string,
-  apiMethodConfig: Record<HttpMethod, OperationConfig>,
+  apiMethodConfig: Partial<Record<HttpMethod, OperationConfig>>,
   dataAdapterStorage: DataAdapterStorage,
 ) => {
   const router = Router();
@@ -78,19 +78,17 @@ export const createRouterForApiMethod = (
 };
 
 const getOperationHandler = (apiConfig: OperationConfig, dataAdapterStorage: DataAdapterStorage) => {
-  const operation = apiConfig.operation!;
-
-  switch (operation) {
+  switch (apiConfig.operation) {
     case 'create':
       return getCreateEntityHandler(apiConfig, dataAdapterStorage);
     case 'read':
-    case 'update':
-    case 'delete':
-    case 'partial-update':
+    // case 'update':
+    // case 'delete':
+    // case 'partial-update':
       throw new Error('Under Construction!');
     default:
-      const shouldNotHappen: never = operation;
-      throw new Error(`The operation "${operation}" is not handled!`);
+      const shouldNotHappen: never = apiConfig;
+      throw new Error(`The operation "${(apiConfig as any)?.operation}" is not handled!`);
   }
 
 };

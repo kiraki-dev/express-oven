@@ -1,14 +1,12 @@
-import { writeFile } from 'fs';
-import { OperationConfig } from '../types';
-import { Application, Request, Response, Router } from 'express';
-import { IRouterMatcher, RequestHandler } from 'express-serve-static-core';
+import { CreateOperationConfig, OperationConfig } from '../types';
+import { Request, Response } from 'express';
+import { RequestHandler } from 'express-serve-static-core';
 import { DataAdapterStorage } from '../utils/create-data-adapter-storage';
 import { getNumberId } from '../utils/get-number-id';
 import genUid from 'light-uid';
 
-export const getCreateEntityHandler = (methodConfigs: OperationConfig, dataAdapterStorage: DataAdapterStorage): RequestHandler => {
-  // isValidCreateOperationConfig
-  if (!methodConfigs.uidField) {
+export const getCreateEntityHandler = (methodConfigs: CreateOperationConfig, dataAdapterStorage: DataAdapterStorage): RequestHandler => {
+  if (!isValidCreateOperationConfig(methodConfigs)) {
     throw new Error('uidField property is required for create type operations');
   }
 
@@ -27,3 +25,7 @@ export const getCreateEntityHandler = (methodConfigs: OperationConfig, dataAdapt
     res.send(newDataItem);
   }
 };
+
+const isValidCreateOperationConfig = (config: OperationConfig): config is CreateOperationConfig => {
+  return config.hasOwnProperty('uidField');
+}
