@@ -9,16 +9,13 @@ export interface CreateOperationConfig {
     name: string,
     type: string,
   },
-  paramMatch?: {
-    [param: string]: string;
-  }
-  save?: boolean;
+  save: boolean;
   dataJsonPath?: string;
 }
 
 export interface ReadOperationConfig {
   operation: 'read';
-  readOne?: boolean;
+  readOne: boolean;
   paramMatch?: {
     [param: string]: string;
   }
@@ -30,5 +27,6 @@ export type OperationConfig = CreateOperationConfig | ReadOperationConfig;
 export type ApiConfig = Record<string, Partial<Record<HttpMethod, OperationConfig>>>;
 
 export interface DefaultConfigs {
-  save?: boolean;
+  save: boolean;
+  readOne: boolean;
 }
