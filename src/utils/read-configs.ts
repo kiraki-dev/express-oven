@@ -13,6 +13,7 @@ export const readConfigs = (options?: CreateExpressOvenRoutesOptions): PartialEx
 
   try {
     const configFile = readFileSync(filePath, { encoding: 'utf-8' });
+
     return parse(configFile);
   } catch (err) {
     console.error(err);

@@ -5,6 +5,7 @@ import { getCreateEntityHandler } from './operations/get-create-entity.handler';
 import { DataAdapterStorage } from './utils/create-data-adapter-storage';
 import { OperationConfig } from './typing-utils/operations';
 import { getAppUrl } from './utils/url-utils';
+import { getReadEntityHandler } from './operations/get-read-entity.handler';
 
 export const createRouterForApiMethod = (
   url: string,
@@ -84,10 +85,11 @@ const getOperationHandler = (apiConfig: OperationConfig, dataAdapterStorage: Dat
     case 'create':
       return getCreateEntityHandler(apiConfig, dataAdapterStorage);
     case 'read':
+      return getReadEntityHandler(apiConfig, dataAdapterStorage);
     case 'update':
     case 'delete':
     case 'partial-update':
-      throw new Error(`Under Construction! (operation "${apiConfig.operation}" is not supported yet)`);
+      throw new Error('Under Construction!');
     default:
       const shouldNotHappen: never = apiConfig;
       throw new Error(`The operation "${(shouldNotHappen as any)?.operation}" is not handled!`);
