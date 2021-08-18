@@ -6,22 +6,15 @@ import { CreateExpressOvenRoutesOptions, ExpressOvenConfig } from '../create-exp
 
 export const readConfigs = (options?: CreateExpressOvenRoutesOptions): ExpressOvenConfig => {
   if (options?.configs) {
-    return {
-      ...options.configs,
-      defaultConfigs: options.configs.defaultConfigs || DEFAULT_CONFIGS,
-    };
+    return options.configs
   }
 
   const filePath = resolve(__dirname, options?.configsPath ?? DEFAULT_CONFIG_PATH);
 
   try {
     const configFile = readFileSync(filePath, { encoding: 'utf-8' });
-    const configs = parse(configFile);
 
-    return {
-      ...configs,
-      defaultConfigs: configs.defaultConfigs || DEFAULT_CONFIGS,
-    };
+    return parse(configFile);
   } catch (err) {
     console.error(err);
     throw new Error(`Config file "${filePath}" isn't available.`);

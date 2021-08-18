@@ -77,6 +77,15 @@ const validateReadOperationConfig = (
     };
   }
 
+  if(hasReadOne && 'readOne' in config && config.readOne) {
+    if(!config.hasOwnProperty('paramMatch')) {
+      readErrors = {
+        ...readErrors,
+        paramMatch: 'Read operation requires for config to have "paramMatch" field, if "readOne is true" to have identifier for one item',
+      };
+    }
+  }
+
   if (Object.keys(readErrors).length) {
     errors[url] = errors[url] ? {
       ...errors[url],

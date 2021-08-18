@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { HTTP_METHODS } from './constants';
 import { getCreateEntityHandler } from './operations/get-create-entity.handler';
 import { DataAdapterStorage } from './utils/create-data-adapter-storage';
+import { getReadEntityHandler } from './operations/get-read-entity.handler';
 
 export const createRouterForApiMethod = (
   url: string,
@@ -82,10 +83,11 @@ const getOperationHandler = (apiConfig: OperationConfig, dataAdapterStorage: Dat
     case 'create':
       return getCreateEntityHandler(apiConfig, dataAdapterStorage);
     case 'read':
+      return getReadEntityHandler(apiConfig, dataAdapterStorage);
     // case 'update':
     // case 'delete':
     // case 'partial-update':
-      throw new Error('Under Construction!');
+    //   throw new Error('Under Construction!');
     default:
       const shouldNotHappen: never = apiConfig;
       throw new Error(`The operation "${(apiConfig as any)?.operation}" is not handled!`);
