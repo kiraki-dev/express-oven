@@ -1,6 +1,15 @@
 import { DataAdapterStorage } from '../../src/utils/create-data-adapter-storage';
+import Mock = jest.Mock;
 
-export const getMockDataAdapterStorage = (initialData: any[] = []): DataAdapterStorage => {
+export type MockObj<T> = {
+  [K in keyof T]: T[K] extends (...args: any) => any ? Mock<ReturnType<T[K]>, Parameters<T[K]>> : T[K];
+};
+
+export type MockDataAdapterStorage = {
+  [K in keyof DataAdapterStorage]: Mock<MockObj<ReturnType<DataAdapterStorage[K]>>, Parameters<DataAdapterStorage[K]>>;
+};
+
+export const getMockDataAdapterStorage = (initialData: any[] = []): MockDataAdapterStorage => {
   const mockAdapter = {
     getAll: jest.fn().mockImplementation(() => initialData),
     addOne: jest.fn().mockImplementation((item: any) => {
@@ -20,9 +29,9 @@ export const getMockDataAdapterStorage = (initialData: any[] = []): DataAdapterS
     getOne: jest.fn().mockImplementation((predicate: (item: any) => boolean) => {
       return initialData.find(predicate) ?? null;
     }),
-  };
+  } as const;
 
   return {
     getAdapter: jest.fn().mockReturnValue(mockAdapter),
-  };
+  } as const;
 };

@@ -1,27 +1,20 @@
 import { resolve } from 'path';
-import { DEFAULT_CONFIG_PATH, DEFAULT_CONFIGS } from '../constants';
+import { DEFAULT_CONFIG_PATH } from '../constants';
 import { readFileSync } from 'fs';
 import { parse } from 'json5';
 import { CreateExpressOvenRoutesOptions, ExpressOvenConfig } from '../create-express-oven-routes';
+import { RecursivePartial } from '../types';
 
-export const readConfigs = (options?: CreateExpressOvenRoutesOptions): ExpressOvenConfig => {
+export const readConfigs = (options?: CreateExpressOvenRoutesOptions): RecursivePartial<ExpressOvenConfig> => {
   if (options?.configs) {
-    return {
-      ...options.configs,
-      defaultConfigs: options.configs.defaultConfigs || DEFAULT_CONFIGS,
-    };
+    return options.configs;
   }
 
   const filePath = resolve(__dirname, options?.configsPath ?? DEFAULT_CONFIG_PATH);
 
   try {
     const configFile = readFileSync(filePath, { encoding: 'utf-8' });
-    const configs = parse(configFile);
-
-    return {
-      ...configs,
-      defaultConfigs: configs.defaultConfigs || DEFAULT_CONFIGS,
-    };
+    return parse(configFile);
   } catch (err) {
     console.error(err);
     throw new Error(`Config file "${filePath}" isn't available.`);

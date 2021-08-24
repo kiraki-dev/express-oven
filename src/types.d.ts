@@ -3,6 +3,10 @@ export type HttpMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
 export type IdType = string | number;
 
+export type RecursivePartial<T> = {
+  [K in keyof T]?: T[K] extends Record<any, any> ? RecursivePartial<T[K]> : T[K];
+}
+
 export interface CreateOperationConfig {
   operation: 'create';
   uidField: {

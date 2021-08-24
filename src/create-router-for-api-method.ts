@@ -20,7 +20,7 @@ export const createRouterForApiMethod = (
 
     // todo: we need to guess operation based on method
 
-    router[method as HttpMethod](url, getOperationHandler(methodConfig, dataAdapterStorage));
+    router[method as HttpMethod](url, getOperationHandler(methodConfig!, dataAdapterStorage));
 
     // router[method as HttpMethod](url, (req, res) => {
     //   let data = getJsonPathData(url, fileData) as any[];

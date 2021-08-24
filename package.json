@@ -45,6 +45,6 @@
   ],
   "dependencies": {
     "json5": "^2.2.0",
-    "light-uid": "^1.0.2"
+    "light-uid": "^1.0.4"
   }
 }

@@ -4,12 +4,12 @@ export const createDataAdapterStorage = () => {
   const map = new Map<string, DataAdapter<any>>();
 
   return {
-    getAdapter(path: string): DataAdapter<any> {
+    getAdapter<T = unknown>(path: string): DataAdapter<T> {
       if (map.has(path)) {
-        return map.get(path)!;
+        return map.get(path)! as DataAdapter<T>;
       }
 
-      const adapter = createDataAdapter(path);
+      const adapter = createDataAdapter<T>(path);
       map.set(path, adapter);
 
       return adapter;

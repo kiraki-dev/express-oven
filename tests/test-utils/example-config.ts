@@ -13,6 +13,7 @@ export const exampleConfig = {
           name: 'uid',
           type: 'string',
         },
+        save: false,
       },
     },
     '/api/posts': {

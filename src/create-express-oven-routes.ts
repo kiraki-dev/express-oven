@@ -1,5 +1,5 @@
 import { IRouter, Router } from 'express';
-import { ApiConfig, DefaultConfigs } from './types';
+import { ApiConfig, DefaultConfigs, RecursivePartial } from './types';
 import { createRouterForApiMethod } from './create-router-for-api-method';
 import { readConfigs } from './utils/read-configs';
 import { createDataAdapterStorage } from './utils/create-data-adapter-storage';
@@ -12,7 +12,7 @@ export interface ExpressOvenConfig {
 }
 
 export interface CreateExpressOvenRoutesOptions {
-  configs?: ExpressOvenConfig;
+  configs?: RecursivePartial<ExpressOvenConfig>;
   configsPath?: string;
 }
 
