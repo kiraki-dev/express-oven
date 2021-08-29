@@ -1,31 +1,51 @@
-import { ExpressOvenConfig } from '../create-express-oven-routes';
-import { DEFAULT_CONFIGS } from '../constants';
-import { RecursivePartial } from '../types';
+import { ExpressOvenConfig, PartialExpressOvenConfig } from '../create-express-oven-routes';
+import { DEFAULT_CONFIGS, isHttpMethod } from '../constants';
+import { HttpMethod } from '../typing-utils/api-config';
+import { Operation } from '../typing-utils/operations';
 
-export const fixConfigs = (configs: RecursivePartial<ExpressOvenConfig>): ExpressOvenConfig => {
+export const fixConfigs = (configs: PartialExpressOvenConfig): ExpressOvenConfig => {
   const fixedConfigs = {
     ...configs,
-    defaultConfigs: configs.defaultConfigs || DEFAULT_CONFIGS,
+    defaultConfigs: { ...DEFAULT_CONFIGS, ...configs.defaultConfigs },
   } as ExpressOvenConfig;
 
-  if (!fixedConfigs.apis) {
+  if (!configs.apis) {
     return fixedConfigs;
   }
 
-  Object.entries(fixedConfigs.apis).forEach(([url, config]) => {
+  Object.entries(configs.apis).forEach(([, config]) => {
     if (!config) {
       return;
     }
 
     Object.entries(config).forEach(([method, operationConfig]) => {
+      if (!isHttpMethod(method) || !operationConfig) {
+        return;
+      }
+
+      if (!operationConfig.operation) {
+        operationConfig.operation = methodToOperationMap[method];
+      }
+
       if (operationConfig.operation === 'create') {
         // have separate fixers for each one of them. Because they can get bigger.
         operationConfig.save = operationConfig.save || fixedConfigs.defaultConfigs.save;
+        operationConfig.returnEntity = operationConfig.returnEntity || fixedConfigs.defaultConfigs.returnEntity;
       } else if (operationConfig.operation === 'read') {
-        operationConfig.readOne = operationConfig.readOne || fixedConfigs.defaultConfigs.readOne;
+        if (!operationConfig.hasOwnProperty('readOne')) {
+          operationConfig.readOne = false;
+        }
       }
     });
   });
 
   return fixedConfigs;
+};
+
+const methodToOperationMap: Record<HttpMethod, Operation> = {
+  get: 'read',
+  post: 'create',
+  put: 'update',
+  delete: 'delete',
+  patch: 'partial-update',
 };

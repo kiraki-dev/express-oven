@@ -1,5 +1,5 @@
-import { OperationConfig } from '../types';
 import { ExpressOvenConfig } from '../create-express-oven-routes';
+import { OperationConfig } from '../typing-utils/operations';
 
 type Error = Record<string, Record<string, object>>;
 
@@ -41,6 +41,10 @@ export const validateConfigs = (configs: ExpressOvenConfig) => {
 
   Object.entries(configs.apis).forEach(([url, config]) => {
     Object.entries(config).forEach(([method, operationConfig]) => {
+      if (!operationConfig) {
+        // this will be an error but let's do that via schema-json
+        return;
+      }
       // todo: also we need to check if the method is a valid method
 
       if (operationConfig.operation === 'create') {

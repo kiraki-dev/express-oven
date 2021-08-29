@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
+import { resolveProjectPath } from './path-utils';
 
 export interface DataAdapter<T> {
   getAll(): T[];
@@ -12,10 +13,13 @@ export interface DataAdapter<T> {
   deleteOne(predicate: (item: T) => boolean, save: boolean): T | null;
 }
 
-export const createDataAdapter = <T>(path: string): DataAdapter<T> => {
-  let data: T[] = JSON.parse(readFileSync(path, { encoding: 'utf-8' }));
+export const createDataAdapter = <T>(jsonPath: string): DataAdapter<T> => {
+  const finalPath = resolveProjectPath(jsonPath);
 
-  const saveData = () => writeFileSync(path, JSON.stringify(data));
+  const jsonStr = readFileSync(finalPath, { encoding: 'utf-8' });
+  let data: T[] = JSON.parse(jsonStr);
+
+  const saveData = () => writeFileSync(finalPath, JSON.stringify(data));
 
   return {
     getAll: () => data,

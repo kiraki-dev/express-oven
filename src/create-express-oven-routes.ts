@@ -1,5 +1,8 @@
 import { IRouter, Router } from 'express';
-import { ApiConfig, DefaultConfigs, RecursivePartial } from './types';
+
+import { ApiConfig, PartialApiConfig } from './typing-utils/api-config';
+import { DefaultConfigs } from './typing-utils/default-config';
+
 import { createRouterForApiMethod } from './create-router-for-api-method';
 import { readConfigs } from './utils/read-configs';
 import { createDataAdapterStorage } from './utils/create-data-adapter-storage';
@@ -11,8 +14,13 @@ export interface ExpressOvenConfig {
   defaultConfigs: DefaultConfigs;
 }
 
+export interface PartialExpressOvenConfig {
+  apis?: PartialApiConfig;
+  defaultConfigs: Partial<DefaultConfigs>;
+}
+
 export interface CreateExpressOvenRoutesOptions {
-  configs?: RecursivePartial<ExpressOvenConfig>;
+  configs?: PartialExpressOvenConfig;
   configsPath?: string;
 }
 
@@ -22,7 +30,7 @@ export const createExpressOvenRoutes = (options?: CreateExpressOvenRoutesOptions
 
   const configs = fixConfigs(readConfigs(options));
 
-  validateConfigs(configs)
+  // validateConfigs(configs);
 
   Object.entries(configs.apis).map(([url, methodConfigs]) => {
     router.use(createRouterForApiMethod(url, methodConfigs, dataAdapterStorage));

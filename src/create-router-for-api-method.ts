@@ -1,8 +1,10 @@
-import { OperationConfig, HttpMethod } from './types';
+import { HttpMethod } from './typing-utils/api-config';
 import { Router } from 'express';
-import { HTTP_METHODS } from './constants';
+import { HTTP_METHODS, isHttpMethod } from './constants';
 import { getCreateEntityHandler } from './operations/get-create-entity.handler';
 import { DataAdapterStorage } from './utils/create-data-adapter-storage';
+import { OperationConfig } from './typing-utils/operations';
+import { getAppUrl } from './utils/url-utils';
 
 export const createRouterForApiMethod = (
   url: string,
@@ -14,13 +16,13 @@ export const createRouterForApiMethod = (
   Object.entries(apiMethodConfig).map(([method, methodConfig]) => {
     // verifyMethodConfig()
 
-    if (!HTTP_METHODS.includes(method)) {
-      throw new Error(`Unknown method [${url}][${method}]`);
+    if (!isHttpMethod(method) ?? !methodConfig) {
+      throw new Error(`Unknown method ${method} ${url}`);
     }
 
-    // todo: we need to guess operation based on method
+    router[method as HttpMethod](url, getOperationHandler(methodConfig, dataAdapterStorage));
 
-    router[method as HttpMethod](url, getOperationHandler(methodConfig!, dataAdapterStorage));
+    console.info('[INFO]', `hit ${method.toUpperCase()} ${getAppUrl(url)} for ${methodConfig.operation.toUpperCase()} operation`);
 
     // router[method as HttpMethod](url, (req, res) => {
     //   let data = getJsonPathData(url, fileData) as any[];
@@ -82,13 +84,13 @@ const getOperationHandler = (apiConfig: OperationConfig, dataAdapterStorage: Dat
     case 'create':
       return getCreateEntityHandler(apiConfig, dataAdapterStorage);
     case 'read':
-    // case 'update':
-    // case 'delete':
-    // case 'partial-update':
-      throw new Error('Under Construction!');
+    case 'update':
+    case 'delete':
+    case 'partial-update':
+      throw new Error(`Under Construction! (operation "${apiConfig.operation}" is not supported yet)`);
     default:
       const shouldNotHappen: never = apiConfig;
-      throw new Error(`The operation "${(apiConfig as any)?.operation}" is not handled!`);
+      throw new Error(`The operation "${(shouldNotHappen as any)?.operation}" is not handled!`);
   }
 
 };

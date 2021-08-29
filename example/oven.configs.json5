@@ -1,0 +1,43 @@
+{
+  "defaultConfigs": {
+    "save": false,
+  },
+  "apis": {
+    "/api/datasets": {
+//      "get": {
+//        // create, read, update, delete
+//        "operation": "read",
+//        "dataJsonPath": "./oven-data/datasets.json",
+//        "readOne": false // default
+//      }
+    },
+    "/api/users": {
+//      "get": {
+//        "dataJsonPath": "./oven-data/users.json",
+//        // create, read, update, delete
+//        "operation": "read",
+//        "readOne": false // default
+//      },
+      "post": {
+        "operation": "create",
+        "dataJsonPath": "./data/users.json",
+        "uidField": {
+          "name": "uid",
+          "type": "string"
+        },
+        "save": false
+      }
+    },
+    "/api/users/:userUid": {
+//      "get": {
+//        // create, read, update, delete
+//        "operation": "read",
+//        "dataJsonPath": "./oven-data/users.json",
+//        "readOne": true,
+//        "paramMatch": {
+//          "userUid": "uid"
+//        }
+//      },
+    }
+  },
+}
