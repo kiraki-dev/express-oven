@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "apis": {
+      "type": "object"
+    },
+    "defaultConfigs": {
+      "$ref": "default-config.schema.json"
+    }
+  },
+  "required": ["apis", "defaultConfigs"]
+}
