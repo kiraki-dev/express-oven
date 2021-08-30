@@ -3,10 +3,12 @@
   "properties": {
     "operation": {
       "type": "string",
-      "const": "create"
+      "const": "update"
     },
-    "uidField": {
-      "$ref": "uid-field-config.schema.json"
+    "paramMatch": {
+      "type": "object",
+      "properties": {
+      }
     },
     "save": {
       "type": "boolean"
@@ -18,5 +20,5 @@
       "type": "string"
     }
   },
-  "required": ["operation", "uidField", "save", "dataJsonPath", "returnEntity"]
+  "required": ["operation", "paramMatch", "save", "dataJsonPath", "returnEntity"]
 }

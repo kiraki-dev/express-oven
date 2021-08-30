@@ -1,7 +1,7 @@
 import { ExpressOvenConfig } from '../../create-express-oven-routes';
 import { ajv } from './ajv-config';
 import { isHttpMethod } from '../../constants';
-import { isCreateOperation, isReadListOperation, isReadOneOperation } from '../operation-config-utils';
+import { isCreateOperation, isReadListOperation, isReadOneOperation, isUpdateOperation } from '../operation-config-utils';
 
 const validateConfigs = (configs: ExpressOvenConfig) => {
   ajv.validate('express-oven-config.schema.json', configs);
@@ -18,6 +18,8 @@ const validateConfigs = (configs: ExpressOvenConfig) => {
         ajv.validate('read-one-entity-operation-config.schema.json', operationConfig);
       } else if (isReadListOperation(operationConfig)) {
         ajv.validate('read-entity-list-operation-config.schema.json', operationConfig);
+      } else if (isUpdateOperation(operationConfig)) {
+        ajv.validate('update-entity-operation-config.schema.json', operationConfig);
       }
     });
   });
