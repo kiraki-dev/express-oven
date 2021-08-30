@@ -11,11 +11,14 @@
     "save": {
       "type": "boolean"
     },
+    "returnEntity": {
+      "type": "boolean"
+    },
     "dataJsonPath": {
       "type": "string",
       "minLength": 1,
       "maxLength": 1024
     }
   },
-  "required": ["operation", "uidField", "save", "dataJsonPath"]
+  "required": ["operation", "uidField", "save", "dataJsonPath", "returnEntity"]
 }
