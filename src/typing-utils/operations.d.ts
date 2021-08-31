@@ -32,8 +32,8 @@ export interface UpdateOperationConfig {
   returnEntity: boolean;
 }
 
-export interface PartialUpdateOperationConfig {
-  operation: 'partial-update';
+export interface PatchOperationConfig {
+  operation: 'patch';
   paramMatch: Record<string, string>;
   dataJsonPath: string;
   returnEntity: boolean;
@@ -53,17 +53,24 @@ export type OperationConfig = (
   ReadOneOperationConfig |
   ReadListOperationConfig |
   UpdateOperationConfig |
-  PartialUpdateOperationConfig |
+  PatchOperationConfig |
   DeleteOperationConfig
 );
 
 export type Operation = OperationConfig['operation'];
 
+export type PartialCreateOperationConfig = WithOptional<CreateOperationConfig, 'operation' | 'returnEntity' | 'save'>;
+export type PartialReadOneOperationConfig = WithOptional<ReadOneOperationConfig, 'operation' | 'readOne'>;
+export type PartialReadListOperationConfig = WithOptional<ReadListOperationConfig, 'operation' | 'readOne'>;
+export type PartialUpdateOperationConfig = WithOptional<UpdateOperationConfig, 'operation' | 'returnEntity' | 'save'>;
+export type PartialPatchOperationConfig = WithOptional<PatchOperationConfig, 'operation' | 'returnEntity' | 'save'>;
+export type PartialDeleteOperationConfig = WithOptional<DeleteOperationConfig, 'operation' | 'returnEntity' | 'save'>;
+
 export type PartialOperationConfig = (
-  WithOptional<CreateOperationConfig, 'operation' | 'returnEntity' | 'save'> |
-  WithOptional<ReadOneOperationConfig, 'operation' | 'readOne'> |
-  WithOptional<ReadListOperationConfig, 'operation' | 'readOne'> |
-  WithOptional<UpdateOperationConfig, 'operation' | 'returnEntity' | 'save'> |
-  WithOptional<PartialUpdateOperationConfig, 'operation' | 'returnEntity' | 'save'> |
-  WithOptional<DeleteOperationConfig, 'operation' | 'returnEntity' | 'save'>
+  PartialCreateOperationConfig |
+  PartialReadOneOperationConfig |
+  PartialReadListOperationConfig |
+  PartialUpdateOperationConfig |
+  PartialPatchOperationConfig |
+  PartialDeleteOperationConfig
 );

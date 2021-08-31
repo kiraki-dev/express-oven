@@ -4,7 +4,7 @@ import { isHttpMethod } from '../../constants';
 import {
   isCreateOperation,
   isDeleteOperation,
-  isPartialUpdateOperation,
+  isPatchOperation,
   isReadListOperation,
   isReadOneOperation,
   isUpdateOperation,
@@ -29,7 +29,7 @@ const validateConfigs = (configs: ExpressOvenConfig) => {
         ajv.validate('update-entity-operation-config.schema.json', operationConfig);
       } else if (isDeleteOperation(operationConfig)) {
         ajv.validate('delete-entity-operation-config.schema.json', operationConfig);
-      } else if (isPartialUpdateOperation(operationConfig)) {
+      } else if (isPatchOperation(operationConfig)) {
         // throw new Error('Under Construction!');
       }
     });

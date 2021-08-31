@@ -10,8 +10,9 @@ import { getReadListEntityHandler } from './operations/get-read-list-entity.hand
 import { getReadOneEntityHandler } from './operations/get-read-one-entity.handler';
 import { getDeleteEntityHandler } from './operations/get-delete-entity.handler';
 import {
-  isCreateOperation, isDeleteOperation,
-  isPartialUpdateOperation,
+  isCreateOperation,
+  isDeleteOperation,
+  isPatchOperation,
   isReadListOperation,
   isReadOneOperation,
   isUpdateOperation,
@@ -31,7 +32,8 @@ export const createRouterForApiMethod = (
 
     router[method as HttpMethod](url, getOperationHandler(methodConfig, dataAdapterStorage));
 
-    console.info('[INFO]', `hit ${method.toUpperCase()} ${getAppUrl(url)} for ${methodConfig.operation.toUpperCase()} operation`);
+    console.info('[INFO]',
+      `hit ${method.toUpperCase()} ${getAppUrl(url)} for ${methodConfig.operation.toUpperCase()} operation`);
   });
 
   return router;
@@ -43,12 +45,12 @@ const getOperationHandler = (operationConfig: OperationConfig, dataAdapterStorag
   } else if (isReadOneOperation(operationConfig)) {
     return getReadOneEntityHandler(operationConfig, dataAdapterStorage);
   } else if (isReadListOperation(operationConfig)) {
-    return getReadListEntityHandler(operationConfig, dataAdapterStorage)
+    return getReadListEntityHandler(operationConfig, dataAdapterStorage);
   } else if (isUpdateOperation(operationConfig)) {
     return getUpdateEntityHandler(operationConfig, dataAdapterStorage);
   } else if (isDeleteOperation(operationConfig)) {
     return getDeleteEntityHandler(operationConfig, dataAdapterStorage);
-  } else if (isPartialUpdateOperation(operationConfig)) {
+  } else if (isPatchOperation(operationConfig)) {
     throw new Error('Under Construction!');
   }
 

@@ -1,7 +1,13 @@
 import { ExpressOvenConfig, PartialExpressOvenConfig } from '../create-express-oven-routes';
 import { DEFAULT_CONFIGS, isHttpMethod } from '../constants';
 import { HttpMethod } from '../typing-utils/api-config';
-import { Operation } from '../typing-utils/operations';
+import {
+  CreateOperationConfig, Operation, PartialCreateOperationConfig, PartialDeleteOperationConfig, PartialOperationConfig,
+  PartialPatchOperationConfig,
+  PartialReadListOperationConfig,
+  PartialReadOneOperationConfig, PartialUpdateOperationConfig,
+} from '../typing-utils/operations';
+import { DefaultConfigs } from '../typing-utils/default-config';
 
 export const fixConfigs = (configs: PartialExpressOvenConfig): ExpressOvenConfig => {
   const fixedConfigs = {
@@ -28,13 +34,15 @@ export const fixConfigs = (configs: PartialExpressOvenConfig): ExpressOvenConfig
       }
 
       if (operationConfig.operation === 'create') {
-        // have separate fixers for each one of them. Because they can get bigger.
-        operationConfig.save = operationConfig.save || fixedConfigs.defaultConfigs.save;
-        operationConfig.returnEntity = operationConfig.returnEntity || fixedConfigs.defaultConfigs.returnEntity;
+        fixCreateOperation(operationConfig, fixedConfigs.defaultConfigs)
       } else if (operationConfig.operation === 'read') {
-        if (!operationConfig.hasOwnProperty('readOne')) {
-          operationConfig.readOne = false;
-        }
+        fixReadOperation(operationConfig, fixedConfigs.defaultConfigs)
+      } else if (operationConfig.operation === 'update') {
+        fixUpdateOperation(operationConfig, fixedConfigs.defaultConfigs)
+      } else if (operationConfig.operation === 'patch') {
+        fixPatchOperation(operationConfig, fixedConfigs.defaultConfigs)
+      } else if (operationConfig.operation === 'delete') {
+        fixDeleteOperation(operationConfig, fixedConfigs.defaultConfigs)
       }
     });
   });
@@ -47,5 +55,29 @@ const methodToOperationMap: Record<HttpMethod, Operation> = {
   post: 'create',
   put: 'update',
   delete: 'delete',
-  patch: 'partial-update',
+  patch: 'patch',
 };
+
+const fixCreateOperation = (config: PartialCreateOperationConfig, defaultConfigs: DefaultConfigs) => {
+  config.save = config.save || defaultConfigs.save;
+  config.returnEntity = config.returnEntity || defaultConfigs.returnEntity;
+}
+
+const fixReadOperation = (config: PartialReadOneOperationConfig | PartialReadListOperationConfig, defaultConfigs: DefaultConfigs) => {
+  config.readOne = config.readOne || false;
+}
+
+const fixUpdateOperation = (config: PartialUpdateOperationConfig, defaultConfigs: DefaultConfigs) => {
+  config.save = config.save || defaultConfigs.save;
+  config.returnEntity = config.returnEntity || defaultConfigs.returnEntity;
+}
+
+const fixPatchOperation = (config: PartialPatchOperationConfig, defaultConfigs: DefaultConfigs) => {
+  config.save = config.save || defaultConfigs.save;
+  config.returnEntity = config.returnEntity || defaultConfigs.returnEntity;
+}
+
+const fixDeleteOperation = (config: PartialDeleteOperationConfig, defaultConfigs: DefaultConfigs) => {
+  config.save = config.save || defaultConfigs.save;
+  config.returnEntity = config.returnEntity || defaultConfigs.returnEntity;
+}
