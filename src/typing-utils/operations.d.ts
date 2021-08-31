@@ -2,10 +2,8 @@ import { WithOptional } from './typings';
 
 export interface CreateOperationConfig {
   operation: 'create';
-  uidField: {
-    name: string,
-    type: string,
-  },
+  uidField: Record<'name' | 'type', string>;
+  paramMatch?: Record<string, string>;
   save: boolean;
   dataJsonPath: string;
   returnEntity: boolean;
@@ -14,29 +12,21 @@ export interface CreateOperationConfig {
 export interface ReadOneOperationConfig {
   operation: 'read';
   readOne: true;
-  paramMatch: {
-    [param: string]: string;
-  }
+  paramMatch: Record<string, string>;
   dataJsonPath: string;
 }
 
 export interface ReadListOperationConfig {
   operation: 'read';
   readOne: false;
-  paramMatch?: {
-    [param: string]: string;
-  }
-  filterMatch?: {
-    [param: string]: string;
-  }
+  paramMatch?: Record<string, string>;
+  filterMatch?: Record<string, string>;
   dataJsonPath: string;
 }
 
 export interface UpdateOperationConfig {
   operation: 'update';
-  paramMatch: {
-    [param: string]: string;
-  }
+  paramMatch: Record<string, string>;
   dataJsonPath: string;
   save: boolean;
   returnEntity: boolean;
@@ -44,9 +34,7 @@ export interface UpdateOperationConfig {
 
 export interface PartialUpdateOperationConfig {
   operation: 'partial-update';
-  paramMatch: {
-    [param: string]: string;
-  }
+  paramMatch: Record<string, string>;
   dataJsonPath: string;
   returnEntity: boolean;
   save: boolean;
@@ -54,9 +42,7 @@ export interface PartialUpdateOperationConfig {
 
 export interface DeleteOperationConfig {
   operation: 'delete';
-  paramMatch: {
-    [param: string]: string;
-  }
+  paramMatch: Record<string, string>;
   dataJsonPath: string;
   returnEntity: boolean;
   save: boolean;
