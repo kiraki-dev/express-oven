@@ -1,5 +1,7 @@
 import {
-  CreateOperationConfig, OperationConfig, ReadListOperationConfig, ReadOneOperationConfig,
+  CreateOperationConfig, DeleteOperationConfig, OperationConfig, PatchOperationConfig, ReadListOperationConfig,
+  ReadOneOperationConfig,
+  UpdateOperationConfig,
 } from '../typing-utils/operations';
 
 export const isReadOneOperation = (config: OperationConfig): config is ReadOneOperationConfig  => (
@@ -14,14 +16,14 @@ export const isCreateOperation = (config: OperationConfig): config is CreateOper
   config.operation === 'create'
 );
 
-export const isUpdateOperation = (config: OperationConfig): config is CreateOperationConfig  => (
+export const isUpdateOperation = (config: OperationConfig): config is UpdateOperationConfig  => (
   config.operation === 'update'
 );
 
-export const isPartialUpdateOperation = (config: OperationConfig): config is CreateOperationConfig  => (
-  config.operation === 'partial-update'
+export const isPatchOperation = (config: OperationConfig): config is PatchOperationConfig  => (
+  config.operation === 'patch'
 );
 
-export const isDeleteOperation = (config: OperationConfig): config is CreateOperationConfig  => (
+export const isDeleteOperation = (config: OperationConfig): config is DeleteOperationConfig  => (
   config.operation === 'delete'
 );

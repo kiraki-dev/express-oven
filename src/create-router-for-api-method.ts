@@ -1,6 +1,6 @@
 import { HttpMethod } from './typing-utils/api-config';
 import { Router } from 'express';
-import { HTTP_METHODS, isHttpMethod } from './constants';
+import { isHttpMethod } from './constants';
 import { getCreateEntityHandler } from './operations/get-create-entity.handler';
 import { DataAdapterStorage } from './utils/create-data-adapter-storage';
 import { getUpdateEntityHandler } from './operations/get-update-entity.handler';
@@ -42,11 +42,10 @@ const getOperationHandler = (apiConfig: OperationConfig, dataAdapterStorage: Dat
       return getUpdateEntityHandler(apiConfig, dataAdapterStorage);
     case 'delete':
       return getDeleteEntityHandler(apiConfig, dataAdapterStorage);
-    case 'partial-update':
+    case 'patch':
       throw new Error('Under Construction!');
     default:
       const shouldNotHappen: never = apiConfig;
       throw new Error(`The operation "${(shouldNotHappen as any)?.operation}" is not handled!`);
   }
-
 };
