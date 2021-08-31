@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { resolveProjectPath } from './path-utils';
 
 export interface DataAdapter<T> {
-  getAll(predicate: (item: T) => boolean): T[];
+  getAll(predicate?: (item: T) => boolean): T[];
 
   addOne(item: T, save: boolean): void;
 
@@ -23,7 +23,7 @@ export const createDataAdapter = <T>(jsonPath: string): DataAdapter<T> => {
 
   return {
     getAll(predicate: (item: T) => boolean): T[] {
-      return data.filter(predicate);
+      return predicate ? data.filter(predicate) : data;
     },
     getOne(predicate: (item: T) => boolean): T | null {
       return data.find(predicate) ?? null;

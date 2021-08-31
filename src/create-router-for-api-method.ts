@@ -1,6 +1,6 @@
 import { HttpMethod } from './typing-utils/api-config';
 import { Router } from 'express';
-import { HTTP_METHODS, isHttpMethod } from './constants';
+import { isHttpMethod } from './constants';
 import { getCreateEntityHandler } from './operations/get-create-entity.handler';
 import { DataAdapterStorage } from './utils/create-data-adapter-storage';
 import { getUpdateEntityHandler } from './operations/get-update-entity.handler';
@@ -8,6 +8,14 @@ import { OperationConfig } from './typing-utils/operations';
 import { getAppUrl } from './utils/url-utils';
 import { getReadListEntityHandler } from './operations/get-read-list-entity.handler';
 import { getReadOneEntityHandler } from './operations/get-read-one-entity.handler';
+import { getDeleteEntityHandler } from './operations/get-delete-entity.handler';
+import {
+  isCreateOperation, isDeleteOperation,
+  isPartialUpdateOperation,
+  isReadListOperation,
+  isReadOneOperation,
+  isUpdateOperation,
+} from './utils/operation-config-utils';
 
 export const createRouterForApiMethod = (
   url: string,
@@ -29,23 +37,21 @@ export const createRouterForApiMethod = (
   return router;
 };
 
-const getOperationHandler = (apiConfig: OperationConfig, dataAdapterStorage: DataAdapterStorage) => {
-  switch (apiConfig.operation) {
-    case 'create':
-      return getCreateEntityHandler(apiConfig, dataAdapterStorage);
-    case 'read':
-      return apiConfig.readOne
-        ? getReadOneEntityHandler(apiConfig, dataAdapterStorage)
-        : getReadListEntityHandler(apiConfig, dataAdapterStorage);
-    case 'update':
-      return getUpdateEntityHandler(apiConfig, dataAdapterStorage);
-    case 'read':
-    case 'delete':
-    case 'partial-update':
-      throw new Error('Under Construction!');
-    default:
-      const shouldNotHappen: never = apiConfig;
-      throw new Error(`The operation "${(shouldNotHappen as any)?.operation}" is not handled!`);
+const getOperationHandler = (operationConfig: OperationConfig, dataAdapterStorage: DataAdapterStorage) => {
+  if (isCreateOperation(operationConfig)) {
+    return getCreateEntityHandler(operationConfig, dataAdapterStorage);
+  } else if (isReadOneOperation(operationConfig)) {
+    return getReadOneEntityHandler(operationConfig, dataAdapterStorage);
+  } else if (isReadListOperation(operationConfig)) {
+    return getReadListEntityHandler(operationConfig, dataAdapterStorage)
+  } else if (isUpdateOperation(operationConfig)) {
+    return getUpdateEntityHandler(operationConfig, dataAdapterStorage);
+  } else if (isDeleteOperation(operationConfig)) {
+    return getDeleteEntityHandler(operationConfig, dataAdapterStorage);
+  } else if (isPartialUpdateOperation(operationConfig)) {
+    throw new Error('Under Construction!');
   }
 
+  const shouldNotHappen: never = operationConfig;
+  throw new Error(`The operation "${(shouldNotHappen as any)?.operation}" is not handled!`);
 };
