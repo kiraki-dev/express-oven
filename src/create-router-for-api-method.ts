@@ -8,6 +8,7 @@ import { OperationConfig } from './typing-utils/operations';
 import { getAppUrl } from './utils/url-utils';
 import { getReadListEntityHandler } from './operations/get-read-list-entity.handler';
 import { getReadOneEntityHandler } from './operations/get-read-one-entity.handler';
+import { getDeleteEntityHandler } from './operations/get-delete-entity.handler';
 
 export const createRouterForApiMethod = (
   url: string,
@@ -39,8 +40,8 @@ const getOperationHandler = (apiConfig: OperationConfig, dataAdapterStorage: Dat
         : getReadListEntityHandler(apiConfig, dataAdapterStorage);
     case 'update':
       return getUpdateEntityHandler(apiConfig, dataAdapterStorage);
-    case 'read':
     case 'delete':
+      return getDeleteEntityHandler(apiConfig, dataAdapterStorage);
     case 'partial-update':
       throw new Error('Under Construction!');
     default:
