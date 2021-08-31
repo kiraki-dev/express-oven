@@ -1,0 +1,25 @@
+import { ExpressOvenConfig } from '../../create-express-oven-routes';
+import { ajv } from './ajv-config';
+import { isHttpMethod } from '../../constants';
+
+const validateConfigs = (configs: ExpressOvenConfig) => {
+  ajv.validate('express-oven-config.schema.json', configs);
+
+  Object.entries(configs.apis).forEach(([url, config]) => {
+    Object.entries(config).forEach(([method, operationConfig]) => {
+      if (!isHttpMethod(method)) {
+        throw new Error(`Unknown method '${method}'`)
+      }
+
+      if (operationConfig.operation === 'create') {
+        ajv.validate('create-entity-operation-config.schema.json', operationConfig);
+      }
+    });
+  });
+
+  console.log(ajv.errors);
+
+  return !!ajv.errors;
+};
+
+export default validateConfigs;

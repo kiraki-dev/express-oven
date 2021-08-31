@@ -6,7 +6,7 @@ import { DefaultConfigs } from './typing-utils/default-config';
 import { createRouterForApiMethod } from './create-router-for-api-method';
 import { readConfigs } from './utils/read-configs';
 import { createDataAdapterStorage } from './utils/create-data-adapter-storage';
-import { validateConfigs } from './utils/validation';
+import { validateConfigs } from './utils/validations/validation-old';
 import { fixConfigs } from './utils/fix-configs';
 
 export interface ExpressOvenConfig {

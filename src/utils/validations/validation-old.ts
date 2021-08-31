@@ -1,5 +1,5 @@
-import { ExpressOvenConfig } from '../create-express-oven-routes';
-import { OperationConfig } from '../typing-utils/operations';
+import { ExpressOvenConfig } from '../../create-express-oven-routes';
+import { OperationConfig } from '../../typing-utils/operations';
 
 type Error = Record<string, Record<string, object>>;
 
