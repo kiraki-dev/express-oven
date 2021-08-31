@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "operation": {
+      "type": "string",
+      "const": "read"
+    },
+    "readOne": {
+      "type": "boolean",
+      "const": true
+    },
+    "paramMatch": {
+      "type": "object",
+      "properties": {
+
+      }
+    },
+    "dataJsonPath": {
+      "type": "string"
+    }
+  },
+  "required": ["operation", "readOne", "paramMatch", "dataJsonPath"]
+}

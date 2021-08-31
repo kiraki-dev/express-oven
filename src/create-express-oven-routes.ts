@@ -6,8 +6,8 @@ import { DefaultConfigs } from './typing-utils/default-config';
 import { createRouterForApiMethod } from './create-router-for-api-method';
 import { readConfigs } from './utils/read-configs';
 import { createDataAdapterStorage } from './utils/create-data-adapter-storage';
-import { validateConfigs } from './utils/validations/validation-old';
 import { fixConfigs } from './utils/fix-configs';
+import validateConfigs from './utils/validations/validate-configs';
 
 export interface ExpressOvenConfig {
   apis: ApiConfig;
@@ -30,7 +30,7 @@ export const createExpressOvenRoutes = (options?: CreateExpressOvenRoutesOptions
 
   const configs = fixConfigs(readConfigs(options));
 
-  // validateConfigs(configs);
+  validateConfigs(configs);
 
   Object.entries(configs.apis).map(([url, methodConfigs]) => {
     router.use(createRouterForApiMethod(url, methodConfigs, dataAdapterStorage));

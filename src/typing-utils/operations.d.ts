@@ -23,6 +23,12 @@ export interface ReadOneOperationConfig {
 export interface ReadListOperationConfig {
   operation: 'read';
   readOne: false;
+  paramMatch?: {
+    [param: string]: string;
+  }
+  filterMatch?: {
+    [param: string]: string;
+  }
   dataJsonPath: string;
 }
 
