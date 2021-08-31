@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "operation": {
+      "type": "string",
+      "const": "delete"
+    },
+    "paramMatch": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "save": {
+      "type": "boolean"
+    },
+    "returnEntity": {
+      "type": "boolean"
+    },
+    "dataJsonPath": {
+      "type": "string"
+    }
+  },
+  "required": ["operation", "paramMatch", "save", "dataJsonPath", "returnEntity"]
+}

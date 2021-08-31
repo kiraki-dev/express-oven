@@ -7,7 +7,7 @@ import { createRouterForApiMethod } from './create-router-for-api-method';
 import { readConfigs } from './utils/read-configs';
 import { createDataAdapterStorage } from './utils/create-data-adapter-storage';
 import { fixConfigs } from './utils/fix-configs';
-import validateConfigs from './utils/validations/validate-configs';
+import validateConfigs from './validations/validate-configs';
 
 export interface ExpressOvenConfig {
   apis: ApiConfig;
