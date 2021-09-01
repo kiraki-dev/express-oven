@@ -12,13 +12,11 @@
     "paramMatch": {
       "type": "object",
       "properties": {
-
       }
     },
     "filterMatch": {
       "type": "object",
       "properties": {
-
       }
     },
     "dataJsonPath": {

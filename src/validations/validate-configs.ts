@@ -1,14 +1,12 @@
-import { ExpressOvenConfig } from '../../create-express-oven-routes';
+import { ExpressOvenConfig } from '../create-express-oven-routes';
 import { ajv } from './ajv-config';
-import { isHttpMethod } from '../../constants';
+import { isHttpMethod } from '../constants';
 import {
-  isCreateOperation,
-  isDeleteOperation,
-  isPatchOperation,
+  isCreateOperation, isDeleteOperation, isPatchOperation,
   isReadListOperation,
   isReadOneOperation,
   isUpdateOperation,
-} from '../operation-config-utils';
+} from '../utils/operation-config-utils';
 
 const validateConfigs = (configs: ExpressOvenConfig) => {
   ajv.validate('express-oven-config.schema.json', configs);
@@ -27,10 +25,10 @@ const validateConfigs = (configs: ExpressOvenConfig) => {
         ajv.validate('read-entity-list-operation-config.schema.json', operationConfig);
       } else if (isUpdateOperation(operationConfig)) {
         ajv.validate('update-entity-operation-config.schema.json', operationConfig);
+      } else if (isPatchOperation(operationConfig)) {
+        ajv.validate('patch-entity-operation-config.schema.json', operationConfig);
       } else if (isDeleteOperation(operationConfig)) {
         ajv.validate('delete-entity-operation-config.schema.json', operationConfig);
-      } else if (isPatchOperation(operationConfig)) {
-        // throw new Error('Under Construction!');
       }
     });
   });

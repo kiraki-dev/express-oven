@@ -8,6 +8,8 @@ export interface DataAdapter<T> {
 
   updateOne(predicate: (item: T) => boolean, item: T, save: boolean): T | null;
 
+  patchOne(predicate: (item: T) => boolean, item: Partial<T>, save: boolean): T | null;
+
   getOne(predicate: (item: T) => boolean): T | null;
 
   deleteOne(predicate: (item: T) => boolean, save: boolean): T | null;
@@ -40,6 +42,19 @@ export const createDataAdapter = <T>(jsonPath: string): DataAdapter<T> => {
       save && saveData();
 
       return itemToDelete;
+    },
+    patchOne(predicate: (item: T) => boolean, item: Partial<T>, save: boolean): T {
+      let patchedItem: T;
+      data = data.map((current) => {
+        const isPredicate = predicate(current);
+        if (isPredicate) {
+          patchedItem = { ...current, ...item } as T;
+        }
+        return isPredicate ? patchedItem : current
+      });
+      save && saveData();
+
+      return patchedItem!;
     },
     updateOne(predicate: (item: T) => boolean, item: T, save: boolean): T {
       data = data.map((current) => predicate(current) ? item : current);
