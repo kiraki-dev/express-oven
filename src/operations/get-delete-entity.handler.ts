@@ -10,10 +10,6 @@ export const getDeleteEntityHandler = (methodConfigs: DeleteOperationConfig, dat
   return (req: Request, res: Response) => {
     const deletedItem = dataAdapter.deleteOne(matchEntitiesByParams(req.params, methodConfigs.paramMatch), methodConfigs.save);
 
-    if (methodConfigs.returnEntity) {
-      res.send(deletedItem);
-    } else {
-      res.end();
-    }
-  };
+    methodConfigs.returnEntity ? res.send(deletedItem) : res.end();
+  }
 };

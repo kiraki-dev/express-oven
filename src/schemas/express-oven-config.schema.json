@@ -2,7 +2,9 @@
   "type": "object",
   "properties": {
     "apis": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+      }
     },
     "defaultConfigs": {
       "$ref": "default-config.schema.json"

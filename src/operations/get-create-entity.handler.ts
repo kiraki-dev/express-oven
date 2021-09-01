@@ -17,6 +17,6 @@ export const getCreateEntityHandler = (methodConfigs: CreateOperationConfig, dat
 
     dataAdapter.addOne(newDataItem, methodConfigs.save!);
 
-    res.send(newDataItem);
+    res.send(methodConfigs.returnEntity ? newDataItem : { [name]: newDataItem[name] });
   };
 };
