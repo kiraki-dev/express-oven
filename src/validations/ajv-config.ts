@@ -20,6 +20,6 @@ ajv.addSchema(CreateOperationSchema, 'create-entity-operation-config.schema.json
 ajv.addSchema(ReadOneOperationSchema, 'read-one-entity-operation-config.schema.json');
 ajv.addSchema(ReadListOperationSchema, 'read-entity-list-operation-config.schema.json');
 ajv.addSchema(UpdateOperationSchema, 'update-entity-operation-config.schema.json');
-ajv.addSchema(PatchOperationSchema, 'update-entity-operation-config.schema.json');
+ajv.addSchema(PatchOperationSchema, 'patch-entity-operation-config.schema.json');
 ajv.addSchema(DeleteOperationSchema, 'delete-entity-operation-config.schema.json');
 ajv.addSchema(UidFieldSchema, 'uid-field-config.schema.json');

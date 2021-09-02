@@ -8,6 +8,7 @@ import { readConfigs } from './utils/read-configs';
 import { createDataAdapterStorage } from './utils/create-data-adapter-storage';
 import { fixConfigs } from './utils/fix-configs';
 import validateConfigs from './validations/validate-configs';
+import { universalBodyParser } from './express-oven-route-configs';
 
 export interface ExpressOvenConfig {
   apis: ApiConfig;
@@ -26,6 +27,9 @@ export interface CreateExpressOvenRoutesOptions {
 
 export const createExpressOvenRoutes = (options?: CreateExpressOvenRoutesOptions): IRouter => {
   const router = Router();
+
+  router.use(universalBodyParser);
+
   const dataAdapterStorage = createDataAdapterStorage();
 
   const configs = fixConfigs(readConfigs(options));

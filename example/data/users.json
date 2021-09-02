@@ -1,8 +1,10 @@
 [
   {
-    "name": "Valod"
+    "uid": 1,
+    "name": "aaa"
   },
   {
-    "name": "Gago"
+    "uid": 2,
+    "name": "bbb"
   }
 ]

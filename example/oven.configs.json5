@@ -1,43 +1,64 @@
 {
   "defaultConfigs": {
     "save": false,
+    "returnEntity": false
   },
   "apis": {
     "/api/datasets": {
-//      "get": {
-//        // create, read, update, delete
-//        "operation": "read",
-//        "dataJsonPath": "./oven-data/datasets.json",
-//        "readOne": false // default
-//      }
+      "get": {
+        "operation": "read",
+        "dataJsonPath": "./data/datasets.json",
+        "readOne": false,
+        filterMatch: {
+          "name": "name"
+        }
+      }
+    },
+    "/api/datasets/:datasetId": {
+      "delete": {
+        "operation": "delete",
+        "dataJsonPath": "./data/datasets.json",
+        "save": true,
+        "paramMatch": {
+          "datasetId": "id"
+        }
+      }
     },
     "/api/users": {
-//      "get": {
-//        "dataJsonPath": "./oven-data/users.json",
-//        // create, read, update, delete
-//        "operation": "read",
-//        "readOne": false // default
-//      },
+      "get": {
+        "dataJsonPath": "./data/users.json",
+        "operation": "read",
+        "readOne": false
+      },
       "post": {
         "operation": "create",
         "dataJsonPath": "./data/users.json",
         "uidField": {
           "name": "uid",
-          "type": "string"
+          "type": "number"
         },
-        "save": false
+        "save": true,
+        "returnEntity": true
       }
     },
     "/api/users/:userUid": {
-//      "get": {
-//        // create, read, update, delete
-//        "operation": "read",
-//        "dataJsonPath": "./oven-data/users.json",
-//        "readOne": true,
-//        "paramMatch": {
-//          "userUid": "uid"
-//        }
-//      },
+      "get": {
+        "operation": "read",
+        "dataJsonPath": "./data/users.json",
+        "readOne": true,
+        "paramMatch": {
+          "userUid": "uid"
+        }
+      },
+      "put": {
+        "operation": "update",
+        "dataJsonPath": "./data/users.json",
+        "returnEntity": true,
+        "save": true,
+        "paramMatch": {
+          "userUid": "uid"
+        }
+      }
     }
-  },
+  }
 }
