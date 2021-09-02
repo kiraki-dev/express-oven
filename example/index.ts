@@ -1,7 +1,10 @@
 import { createExpressOvenRoutes } from 'express-oven';
-import express from 'express';
+import express, { json, raw, text, urlencoded } from 'express';
 
 const app = express();
+
+app.use(json(), raw(), text());
+app.use(urlencoded({ extended: true }))
 
 app.use(createExpressOvenRoutes());
 

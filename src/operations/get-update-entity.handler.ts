@@ -8,7 +8,7 @@ export const getUpdateEntityHandler = (methodConfigs: UpdateOperationConfig, dat
   const dataAdapter = dataAdapterStorage.getAdapter(methodConfigs.dataJsonPath!);
 
   return (req: Request, res: Response) => {
-    const paramsFilter = matchEntitiesByParams(req.params, methodConfigs.paramMatch!);
+    const paramsFilter = matchEntitiesByParams(req.params, methodConfigs.paramMatch);
     const updatedItem = dataAdapter.updateOne(paramsFilter, req.body, methodConfigs.save);
 
     methodConfigs.returnEntity ? res.send(updatedItem) : res.end();

@@ -21,7 +21,7 @@ export const createDataAdapter = <T>(jsonPath: string): DataAdapter<T> => {
   const jsonStr = readFileSync(finalPath, { encoding: 'utf-8' });
   let data: T[] = JSON.parse(jsonStr);
 
-  const saveData = () => writeFileSync(finalPath, JSON.stringify(data));
+  const saveData = () => writeFileSync(finalPath, JSON.stringify(data, null, 2));
 
   return {
     getAll(predicate: (item: T) => boolean): T[] {
