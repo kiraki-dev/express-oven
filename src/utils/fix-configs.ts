@@ -5,7 +5,7 @@ import {
   CreateOperationConfig, Operation, PartialCreateOperationConfig, PartialDeleteOperationConfig, PartialOperationConfig,
   PartialPatchOperationConfig,
   PartialReadListOperationConfig,
-  PartialReadOneOperationConfig, PartialUpdateOperationConfig,
+  PartialReadOneOperationConfig, PartialUpdateOperationConfig, PatchOperationConfig,
 } from '../typing-utils/operations';
 import { DefaultConfigs } from '../typing-utils/default-config';
 
@@ -44,6 +44,7 @@ export const fixConfigs = (configs: PartialExpressOvenConfig): ExpressOvenConfig
       } else if (operationConfig.operation === 'delete') {
         fixDeleteOperation(operationConfig, fixedConfigs.defaultConfigs)
       }
+      fixOtherConfigs(operationConfig, fixedConfigs.defaultConfigs)
     });
   });
 
@@ -80,4 +81,8 @@ const fixPatchOperation = (config: PartialPatchOperationConfig, defaultConfigs: 
 const fixDeleteOperation = (config: PartialDeleteOperationConfig, defaultConfigs: DefaultConfigs) => {
   config.save = config.save || defaultConfigs.save;
   config.returnEntity = config.returnEntity || defaultConfigs.returnEntity;
+}
+
+const fixOtherConfigs = (config: PartialOperationConfig, defaultConfigs: DefaultConfigs) => {
+  config.delay = config.delay || defaultConfigs.delay;
 }
