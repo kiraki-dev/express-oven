@@ -9,4 +9,5 @@ export const isHttpMethod = (method: string): method is HttpMethod => HTTP_METHO
 export const DEFAULT_CONFIGS: DefaultConfigs = {
   save: false,
   returnEntity: true,
+  delay: 300,
 };
