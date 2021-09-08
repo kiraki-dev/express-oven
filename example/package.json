@@ -9,10 +9,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hakobpogh/library-package.git"
+    "url": "https://github.com/hakobpogh/express-oven.git"
   },
   "keywords": [
-    "library-package"
+    "express-oven-example"
   ],
   "author": "hakobpogh",
   "license": "MIT",

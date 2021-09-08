@@ -1,6 +1,6 @@
-# library-package
+# express-oven
 
-library-package description
+An easy mock API generator with express.js
 
 [![NPM][npm-image]][npm-link]
 [![Minzipped Bundle Size][bundlephobia-image]][bundlephobia-link]
@@ -9,29 +9,29 @@ library-package description
 
 with npm
 ```
-npm i -s library-package
+npm i -s express-oven
 ```
 
 with yarn
 ```
-yarn add library-package
+yarn add express-oven
 ```
 
 ## Usage
 
 JavaScript and TypeScript
 ```javascript
-import libraryExport from 'library-package';
+import { libraryExport } from 'express-oven';
 
 // usage example here
 ```
 
 ## License
 
-MIT © [hakobpogh][github-hakobpogh]
+MIT © [kiraki.dev][github-kiraki-dev]
 
-[npm-image]: https://img.shields.io/npm/v/library-package.svg
-[npm-link]: https://www.npmjs.com/package/library-package
-[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/library-package
-[bundlephobia-link]: https://bundlephobia.com/result?p=library-package
-[github-hakobpogh]: https://github.com/hakobpogh
+[npm-image]: https://img.shields.io/npm/v/express-oven.svg
+[npm-link]: https://www.npmjs.com/package/express-oven
+[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/express-oven
+[bundlephobia-link]: https://bundlephobia.com/result?p=express-oven
+[github-kiraki-dev]: https://github.com/kiraki-dev

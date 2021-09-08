@@ -1,7 +1,7 @@
 {
   "name": "express-oven",
   "version": "0.0.1",
-  "description": "library-package description",
+  "description": "An easy mock API generator with express.js",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.ts",
@@ -14,17 +14,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hakobpogh/library-package.git"
+    "url": "https://github.com/hakobpogh/express-oven.git"
   },
   "keywords": [
-    "library-package"
+    "express-oven",
+    "api-generator",
+    "api",
+    "rest",
+    "express",
+    "express.js",
+    "mock-api",
+    "mock",
+    "easy"
   ],
   "author": "hakobpogh",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hakobpogh/library-package/issues"
+    "url": "https://github.com/kiraki-dev/express-oven/issues"
   },
-  "homepage": "https://github.com/hakobpogh/library-package",
+  "homepage": "https://github.com/kiraki-dev/express-oven",
   "devDependencies": {
     "@types/chai": "^4.2.18",
     "@types/express": "^4.17.13",
