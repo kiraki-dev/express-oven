@@ -17,6 +17,7 @@ import {
   isReadOneOperation,
   isUpdateOperation,
 } from './utils/operation-config-utils';
+import { getPatchEntityHandler } from './operations/get-patch-entity.handler';
 
 export const createRouterForApiMethod = (
   url: string,
@@ -51,7 +52,7 @@ const getOperationHandler = (operationConfig: OperationConfig, dataAdapterStorag
   } else if (isDeleteOperation(operationConfig)) {
     return getDeleteEntityHandler(operationConfig, dataAdapterStorage);
   } else if (isPatchOperation(operationConfig)) {
-    throw new Error('Under Construction!');
+    return getPatchEntityHandler(operationConfig, dataAdapterStorage)
   }
 
   const shouldNotHappen: never = operationConfig;
