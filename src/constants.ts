@@ -10,4 +10,7 @@ export const DEFAULT_CONFIGS: DefaultConfigs = {
   save: false,
   returnEntity: true,
   delay: 300,
+  responseModel: {
+    paths: { },
+  },
 };
