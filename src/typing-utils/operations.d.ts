@@ -1,4 +1,5 @@
 import { WithOptional } from './typings';
+import { ResponseModel } from './misc';
 
 export interface CreateOperationConfig {
   operation: 'create';
@@ -8,6 +9,7 @@ export interface CreateOperationConfig {
   dataJsonPath: string;
   returnEntity: boolean;
   delay: number;
+  responseModel: ResponseModel;
 }
 
 export interface ReadOneOperationConfig {
@@ -16,6 +18,7 @@ export interface ReadOneOperationConfig {
   paramMatch: Record<string, string>;
   dataJsonPath: string;
   delay: number;
+  responseModel: ResponseModel;
 }
 
 export interface ReadListOperationConfig {
@@ -25,6 +28,7 @@ export interface ReadListOperationConfig {
   filterMatch?: Record<string, string>;
   dataJsonPath: string;
   delay: number;
+  responseModel: ResponseModel;
 }
 
 export interface UpdateOperationConfig {
@@ -34,6 +38,7 @@ export interface UpdateOperationConfig {
   save: boolean;
   returnEntity: boolean;
   delay: number;
+  responseModel: ResponseModel;
 }
 
 export interface PatchOperationConfig {
@@ -43,6 +48,7 @@ export interface PatchOperationConfig {
   returnEntity: boolean;
   save: boolean;
   delay: number;
+  responseModel: ResponseModel;
 }
 
 export interface DeleteOperationConfig {
@@ -52,6 +58,7 @@ export interface DeleteOperationConfig {
   returnEntity: boolean;
   save: boolean;
   delay: number;
+  responseModel: ResponseModel;
 }
 
 export type OperationConfig = (
@@ -65,12 +72,12 @@ export type OperationConfig = (
 
 export type Operation = OperationConfig['operation'];
 
-export type PartialCreateOperationConfig = WithOptional<CreateOperationConfig, 'operation' | 'returnEntity' | 'save' | 'delay'>;
-export type PartialReadOneOperationConfig = WithOptional<ReadOneOperationConfig, 'operation' | 'readOne' | 'delay'>;
-export type PartialReadListOperationConfig = WithOptional<ReadListOperationConfig, 'operation' | 'readOne' | 'delay'>;
-export type PartialUpdateOperationConfig = WithOptional<UpdateOperationConfig, 'operation' | 'returnEntity' | 'save' | 'delay'>;
-export type PartialPatchOperationConfig = WithOptional<PatchOperationConfig, 'operation' | 'returnEntity' | 'save' | 'delay'>;
-export type PartialDeleteOperationConfig = WithOptional<DeleteOperationConfig, 'operation' | 'returnEntity' | 'save' | 'delay'>;
+export type PartialCreateOperationConfig = WithOptional<CreateOperationConfig, 'operation' | 'returnEntity' | 'save' | 'delay' | 'responseModel'>;
+export type PartialReadOneOperationConfig = WithOptional<ReadOneOperationConfig, 'operation' | 'readOne' | 'delay' | 'responseModel'>;
+export type PartialReadListOperationConfig = WithOptional<ReadListOperationConfig, 'operation' | 'readOne' | 'delay' | 'responseModel'>;
+export type PartialUpdateOperationConfig = WithOptional<UpdateOperationConfig, 'operation' | 'returnEntity' | 'save' | 'delay' | 'responseModel'>;
+export type PartialPatchOperationConfig = WithOptional<PatchOperationConfig, 'operation' | 'returnEntity' | 'save' | 'delay' | 'responseModel'>;
+export type PartialDeleteOperationConfig = WithOptional<DeleteOperationConfig, 'operation' | 'returnEntity' | 'save' | 'delay' | 'responseModel'>;
 
 export type PartialOperationConfig = (
   PartialCreateOperationConfig |

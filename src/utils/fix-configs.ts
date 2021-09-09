@@ -1,18 +1,23 @@
+import merge from 'deepmerge';
 import { ExpressOvenConfig, PartialExpressOvenConfig } from '../create-express-oven-routes';
 import { DEFAULT_CONFIGS, isHttpMethod } from '../constants';
 import { HttpMethod } from '../typing-utils/api-config';
 import {
-  CreateOperationConfig, Operation, PartialCreateOperationConfig, PartialDeleteOperationConfig, PartialOperationConfig,
+  Operation,
+  PartialCreateOperationConfig,
+  PartialDeleteOperationConfig,
+  PartialOperationConfig,
   PartialPatchOperationConfig,
   PartialReadListOperationConfig,
-  PartialReadOneOperationConfig, PartialUpdateOperationConfig, PatchOperationConfig,
+  PartialReadOneOperationConfig,
+  PartialUpdateOperationConfig,
 } from '../typing-utils/operations';
 import { DefaultConfigs } from '../typing-utils/default-config';
 
 export const fixConfigs = (configs: PartialExpressOvenConfig): ExpressOvenConfig => {
   const fixedConfigs = {
     ...configs,
-    defaultConfigs: { ...DEFAULT_CONFIGS, ...configs.defaultConfigs },
+    defaultConfigs: merge(DEFAULT_CONFIGS, configs.defaultConfigs),
   } as ExpressOvenConfig;
 
   if (!configs.apis) {
@@ -85,4 +90,5 @@ const fixDeleteOperation = (config: PartialDeleteOperationConfig, defaultConfigs
 
 const fixOtherConfigs = (config: PartialOperationConfig, defaultConfigs: DefaultConfigs) => {
   config.delay = config.delay || defaultConfigs.delay;
+  config.responseModel = merge(defaultConfigs.responseModel, config.responseModel || {});
 }
