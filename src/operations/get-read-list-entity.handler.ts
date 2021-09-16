@@ -24,5 +24,6 @@ export const getReadListEntityHandler = (
     await delay(methodConfigs.delay);
 
     responseBuilder.setData(requestedItems);
+    responseBuilder.write(res);
   };
 };
