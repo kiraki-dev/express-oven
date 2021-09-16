@@ -15,7 +15,7 @@ export const createResponseBuilder = (responseModel: ResponseModel): ResponseMod
       response = sepPropDeep(responseModel, responseModel.paths.data, data);
     },
     write(res: Response) {
-      response === undefined ? res.send(response) : res.end();
+      response === undefined ? res.end() : res.send(response);
     }
   }
 }

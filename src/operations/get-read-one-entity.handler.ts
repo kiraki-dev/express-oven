@@ -20,5 +20,6 @@ export const getReadOneEntityHandler = (
     await delay(methodConfigs.delay)
 
     responseBuilder.setData(requestedItem);
+    responseBuilder.write(res);
   };
 };
