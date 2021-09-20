@@ -15,7 +15,8 @@ export interface CreateOperationConfig {
 export interface ReadOneOperationConfig {
   operation: 'read';
   readOne: true;
-  paramMatch: Record<string, string>;
+  paramMatch?: Record<string, string>;
+  filterMatch?: Record<string, string>;
   dataJsonPath: string;
   delay: number;
   responseModel: ResponseModel;

@@ -14,9 +14,14 @@
       "properties": {
       }
     },
+    "filterMatch": {
+      "type": "object",
+      "properties": {
+      }
+    },
     "dataJsonPath": {
       "type": "string"
     }
   },
-  "required": ["operation", "readOne", "paramMatch", "dataJsonPath"]
+  "required": ["operation", "readOne", "dataJsonPath"]
 }

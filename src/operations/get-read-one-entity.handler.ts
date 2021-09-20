@@ -1,7 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 import { DataAdapterStorage } from '../utils/create-data-adapter-storage';
 import { ReadOneOperationConfig } from '../typing-utils/operations';
-import { matchEntitiesByParams } from '../utils/entity-utils';
+import { matchEntitiesByBodyFilters, matchEntitiesByParams, matchEntitiesByQueryFilters } from '../utils/entity-utils';
 import { delay } from '../utils/misc';
 import { createResponseBuilder } from '../utils/create-response-model';
 
@@ -13,9 +13,13 @@ export const getReadOneEntityHandler = (
 
   return async (req: Request, res: Response) => {
     const responseBuilder = createResponseBuilder(methodConfigs.responseModel);
-    const paramsFilter = matchEntitiesByParams(req.params, methodConfigs.paramMatch!);
+    const paramsFilter = matchEntitiesByParams(req.params, methodConfigs.paramMatch);
+    const queryFilter = matchEntitiesByQueryFilters(req.query, methodConfigs.filterMatch);
+    const bodyFilter = matchEntitiesByBodyFilters(req.query, methodConfigs.filterMatch);
 
-    const requestedItem = dataAdapter.getAll(paramsFilter);
+    const requestedItem = dataAdapter.getOne((item: any) => (
+      paramsFilter(item) && queryFilter(item) && bodyFilter(item)
+    ));
 
     await delay(methodConfigs.delay)
 
