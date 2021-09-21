@@ -29,3 +29,18 @@ export const sepPropDeep = (
 
   return finalResponse;
 }
+
+export const getObjValue = (obj: any, path: string): any => {
+  const pathArr = path.split('.');
+  let value = obj;
+
+  for (const pathPart of pathArr) {
+    value = value[pathPart];
+
+    if (value === undefined) {
+      return value;
+    }
+  }
+
+  return value;
+}
