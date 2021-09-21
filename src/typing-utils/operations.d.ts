@@ -17,6 +17,8 @@ export interface ReadOneOperationConfig {
   readOne: true;
   paramMatch?: Record<string, string>;
   filterMatch?: Record<string, string>;
+  bodyMatch?: Record<string, string>;
+  queryMatch?: Record<string, string>;
   dataJsonPath: string;
   delay: number;
   responseModel: ResponseModel;
@@ -27,6 +29,8 @@ export interface ReadListOperationConfig {
   readOne: false;
   paramMatch?: Record<string, string>;
   filterMatch?: Record<string, string>;
+  bodyMatch?: Record<string, string>;
+  queryMatch?: Record<string, string>;
   dataJsonPath: string;
   delay: number;
   responseModel: ResponseModel;

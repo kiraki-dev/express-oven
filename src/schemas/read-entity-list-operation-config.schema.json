@@ -19,6 +19,16 @@
       "properties": {
       }
     },
+    "bodyMatch": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "queryMatch": {
+      "type": "object",
+      "properties": {
+      }
+    },
     "dataJsonPath": {
       "type": "string"
     }
