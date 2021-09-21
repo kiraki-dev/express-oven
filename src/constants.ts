@@ -14,3 +14,5 @@ export const DEFAULT_CONFIGS: DefaultConfigs = {
     paths: { },
   },
 };
+
+export const IGNORE_KEY = '#ignore';
