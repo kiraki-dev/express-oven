@@ -15,7 +15,7 @@ export const getReadOneEntityHandler = (
     const responseBuilder = createResponseBuilder(methodConfigs.responseModel);
     const paramsFilter = matchEntitiesByParams(req.params, methodConfigs.paramMatch);
     const queryFilter = matchEntitiesByQueryFilters(req.query, methodConfigs.filterMatch);
-    const bodyFilter = matchEntitiesByBodyFilters(req.query, methodConfigs.filterMatch);
+    const bodyFilter = matchEntitiesByBodyFilters(req.body, methodConfigs.filterMatch);
 
     const requestedItem = dataAdapter.getOne((item: any) => (
       paramsFilter(item) && queryFilter(item) && bodyFilter(item)
