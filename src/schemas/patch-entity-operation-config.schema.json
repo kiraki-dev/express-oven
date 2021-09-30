@@ -18,6 +18,14 @@
     },
     "dataJsonPath": {
       "type": "string"
+    },
+    "responseModel": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "delay": {
+      "type": "boolean"
     }
   },
   "required": ["operation", "paramMatch", "save", "dataJsonPath", "returnEntity"]

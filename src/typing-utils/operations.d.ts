@@ -10,6 +10,9 @@ export interface CreateOperationConfig {
   returnEntity: boolean;
   delay: number;
   responseModel: ResponseModel;
+  extensions?: {
+    withDefaultValues: Record<string, any>
+  }
 }
 
 export interface ReadOneOperationConfig {

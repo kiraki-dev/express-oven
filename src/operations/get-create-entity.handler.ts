@@ -18,6 +18,7 @@ export const getCreateEntityHandler = (
     const newDataItem = {
       [name]: type === 'number' ? getNumberId(dataAdapter.getAll(), name) : genUid(),
       ...req.body,
+      ...(methodConfigs.extensions?.withDefaultValues || {  })
     };
 
     dataAdapter.addOne(newDataItem, methodConfigs.save!);

@@ -16,6 +16,26 @@
     },
     "dataJsonPath": {
       "type": "string"
+    },
+    "responseModel": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "paramMatch": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "properties": {
+        "withDefaultValues": {
+          "type": "object",
+          "properties": {
+          }
+        }
+      }
     }
   },
   "required": ["operation", "uidField", "save", "dataJsonPath", "returnEntity"]
