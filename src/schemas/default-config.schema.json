@@ -6,6 +6,14 @@
     },
     "readOne": {
       "type": "boolean"
+    },
+    "delay": {
+      "type": "number"
+    },
+    "responseModel": {
+      "type": "object",
+      "properties": {
+      }
     }
   }
 }

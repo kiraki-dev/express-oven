@@ -21,13 +21,18 @@ export const getReadOneEntityHandler = (
     const queryFilter = matchEntitiesByQueryFilters(req.query, methodConfigs.queryMatch);
     const bodyFilter = matchEntitiesByBodyFilters(req.body, methodConfigs.bodyMatch);
 
-    const requestedItem = dataAdapter.getOne((item: any) => (
+    const requestedItem = dataAdapter.getOne((item) => (
       paramsFilter(item) && queryFilter(item) && bodyFilter(item)
     ));
 
+    const finalItem = {
+      ...requestedItem,
+      ...methodConfigs.extensions.withDefaultValues,
+    }
+
     await delay(methodConfigs.delay)
 
-    responseBuilder.setData(requestedItem);
+    responseBuilder.setData(finalItem);
     responseBuilder.write(res);
   };
 };
