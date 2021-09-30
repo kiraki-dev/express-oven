@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { ResponseModel } from '../typing-utils/misc';
-import { sepPropDeep } from './object-utils';
+import { setPropDeep } from './object-utils';
 
 export interface ResponseModelBuilder {
   setData(data: any): void;
@@ -12,7 +12,7 @@ export const createResponseBuilder = (responseModel: ResponseModel): ResponseMod
 
   return {
     setData(data: any): void {
-      response = sepPropDeep(response, responseModel.paths.data, data);
+      response = setPropDeep(response, responseModel.paths.data, data);
     },
     write(res: Response) {
       response === undefined ? res.end() : res.send(response);
