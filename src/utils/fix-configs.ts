@@ -3,14 +3,8 @@ import { ExpressOvenConfig, PartialExpressOvenConfig } from '../create-express-o
 import { DEFAULT_CONFIGS, isHttpMethod } from '../constants';
 import { HttpMethod } from '../typing-utils/api-config';
 import {
-  Operation,
-  PartialCreateOperationConfig,
-  PartialDeleteOperationConfig,
-  PartialOperationConfig,
-  PartialPatchOperationConfig,
-  PartialReadListOperationConfig,
-  PartialReadOneOperationConfig,
-  PartialUpdateOperationConfig,
+  Operation, PartialCreateOperationConfig, PartialDeleteOperationConfig, PartialOperationConfig, PartialPatchOperationConfig,
+  PartialReadListOperationConfig, PartialReadOneOperationConfig, PartialUpdateOperationConfig,
 } from '../typing-utils/operations';
 import { DefaultConfigs } from '../typing-utils/default-config';
 
@@ -39,17 +33,17 @@ export const fixConfigs = (configs: PartialExpressOvenConfig): ExpressOvenConfig
       }
 
       if (operationConfig.operation === 'create') {
-        fixCreateOperation(operationConfig, fixedConfigs.defaultConfigs)
+        fixCreateOperation(operationConfig, fixedConfigs.defaultConfigs);
       } else if (operationConfig.operation === 'read') {
-        fixReadOperation(operationConfig, fixedConfigs.defaultConfigs)
+        fixReadOperation(operationConfig, fixedConfigs.defaultConfigs);
       } else if (operationConfig.operation === 'update') {
-        fixUpdateOperation(operationConfig, fixedConfigs.defaultConfigs)
+        fixUpdateOperation(operationConfig, fixedConfigs.defaultConfigs);
       } else if (operationConfig.operation === 'patch') {
-        fixPatchOperation(operationConfig, fixedConfigs.defaultConfigs)
+        fixPatchOperation(operationConfig, fixedConfigs.defaultConfigs);
       } else if (operationConfig.operation === 'delete') {
-        fixDeleteOperation(operationConfig, fixedConfigs.defaultConfigs)
+        fixDeleteOperation(operationConfig, fixedConfigs.defaultConfigs);
       }
-      fixOtherConfigs(operationConfig, fixedConfigs.defaultConfigs)
+      fixOtherConfigs(operationConfig, fixedConfigs.defaultConfigs);
     });
   });
 
@@ -67,28 +61,33 @@ const methodToOperationMap: Record<HttpMethod, Operation> = {
 const fixCreateOperation = (config: PartialCreateOperationConfig, defaultConfigs: DefaultConfigs) => {
   config.save = config.save || defaultConfigs.save;
   config.returnEntity = config.returnEntity || defaultConfigs.returnEntity;
-}
+  config.extensions = config.extensions || { withDefaultValues: {} };
+};
 
-const fixReadOperation = (config: PartialReadOneOperationConfig | PartialReadListOperationConfig, defaultConfigs: DefaultConfigs) => {
+const fixReadOperation = (config: PartialReadOneOperationConfig | PartialReadListOperationConfig,
+  defaultConfigs: DefaultConfigs) => {
   config.readOne = config.readOne || false;
-}
+  config.extensions = config.extensions || { withDefaultValues: {} };
+};
 
 const fixUpdateOperation = (config: PartialUpdateOperationConfig, defaultConfigs: DefaultConfigs) => {
   config.save = config.save || defaultConfigs.save;
   config.returnEntity = config.returnEntity || defaultConfigs.returnEntity;
-}
+  config.extensions = config.extensions || { withDefaultValues: {} };
+};
 
 const fixPatchOperation = (config: PartialPatchOperationConfig, defaultConfigs: DefaultConfigs) => {
   config.save = config.save || defaultConfigs.save;
   config.returnEntity = config.returnEntity || defaultConfigs.returnEntity;
-}
+  config.extensions = config.extensions || { withDefaultValues: {} };
+};
 
 const fixDeleteOperation = (config: PartialDeleteOperationConfig, defaultConfigs: DefaultConfigs) => {
   config.save = config.save || defaultConfigs.save;
   config.returnEntity = config.returnEntity || defaultConfigs.returnEntity;
-}
+};
 
 const fixOtherConfigs = (config: PartialOperationConfig, defaultConfigs: DefaultConfigs) => {
   config.delay = config.delay || defaultConfigs.delay;
   config.responseModel = merge(defaultConfigs.responseModel, config.responseModel || {});
-}
+};

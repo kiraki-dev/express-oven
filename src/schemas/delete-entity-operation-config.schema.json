@@ -15,6 +15,14 @@
     },
     "dataJsonPath": {
       "type": "string"
+    },
+    "responseModel": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "delay": {
+      "type": "number"
     }
   },
   "required": ["operation", "paramMatch", "save", "dataJsonPath"]

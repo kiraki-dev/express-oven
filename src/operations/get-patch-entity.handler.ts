@@ -16,7 +16,11 @@ export const getPatchEntityHandler = (
     const responseBuilder = createResponseBuilder(methodConfigs.responseModel);
     const paramsFilter = matchEntitiesByParams(req.params, methodConfigs.paramMatch);
 
-    const patchedItem = dataAdapter.patchOne(paramsFilter, req.body, methodConfigs.save);
+    const patchedItem = {
+      ...dataAdapter.patchOne(paramsFilter, req.body, methodConfigs.save),
+      ...methodConfigs.extensions.withDefaultValues
+    };
+
 
     await delay(methodConfigs.delay);
     if (methodConfigs.returnEntity) {

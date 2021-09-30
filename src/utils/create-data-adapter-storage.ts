@@ -4,7 +4,7 @@ export const createDataAdapterStorage = () => {
   const map = new Map<string, DataAdapter<any>>();
 
   return {
-    getAdapter<T = unknown>(jsonPath: string): DataAdapter<T> {
+    getAdapter<T = any>(jsonPath: string): DataAdapter<T> {
       if (map.has(jsonPath)) {
         return map.get(jsonPath)! as DataAdapter<T>;
       }

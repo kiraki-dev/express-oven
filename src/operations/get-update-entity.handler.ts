@@ -15,7 +15,10 @@ export const getUpdateEntityHandler = (
   return async (req: Request, res: Response) => {
     const responseBuilder = createResponseBuilder(methodConfigs.responseModel);
     const paramsFilter = matchEntitiesByParams(req.params, methodConfigs.paramMatch);
-    const updatedItem = dataAdapter.updateOne(paramsFilter, req.body, methodConfigs.save);
+    const updatedItem = {
+      ...dataAdapter.updateOne(paramsFilter, req.body, methodConfigs.save),
+      ...methodConfigs.extensions.withDefaultValues,
+    };
 
     await delay(methodConfigs.delay);
     if (methodConfigs.returnEntity) {
