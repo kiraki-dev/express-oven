@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { Optional } from '../typing-utils/typings';
 import { IGNORE_KEY } from '../constants';
-import { getObjValue } from './object-utils';
+import { getPropDeep } from './object-utils';
 
 export const matchEntitiesByParams = (params: Record<string, string>, paramMatch: Optional<Record<string, string>>) => {
   return (entity: any) => paramMatch ? Object.entries(params).every(([param, value]) => {
@@ -9,7 +9,7 @@ export const matchEntitiesByParams = (params: Record<string, string>, paramMatch
     if (entityKeyPath === IGNORE_KEY) {
       return true;
     }
-    const entityValue = getObjValue(entity, entityKeyPath);
+    const entityValue = getPropDeep(entity, entityKeyPath);
 
     return String(entityValue) === value;
   }) : true;
@@ -20,8 +20,8 @@ export const matchEntitiesByBodyFilters = (body: Request['body'], bodyMatch: Opt
     if (entityKeyPath === IGNORE_KEY) {
       return true;
     }
-    const entityValue = getObjValue(entity, entityKeyPath);
-    const value = getObjValue(body, bodyKeyPath);
+    const entityValue = getPropDeep(entity, entityKeyPath);
+    const value = getPropDeep(body, bodyKeyPath);
 
     // todo: we need to handle isArray(value) too
     return entityValue === value;
@@ -33,7 +33,7 @@ export const matchEntitiesByQueryFilters = (query: Request['query'], queryMatch:
     if (entityKeyPath === IGNORE_KEY) {
       return true;
     }
-    const entityValue = getObjValue(entity, entityKeyPath);
+    const entityValue = getPropDeep(entity, entityKeyPath);
 
     // todo: we need to handle isArray(value) too
     return entityValue === query[queryKey];

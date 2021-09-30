@@ -1,36 +1,39 @@
-export const sepPropDeep = (
+export const setPropDeep = (
   obj: any,
   prop: string | undefined,
-  value: any
+  value: any,
 ): any => {
   if (!prop) {
     return value;
   }
 
-  let finalResponse = obj;
   const pathArr = prop.split('.');
+  const finalResponse = obj ?? {};
+  let tempObj = finalResponse;
 
-  if (finalResponse === undefined) {
-    pathArr.reverse().forEach((pathPart) => {
-      finalResponse = {
-        [pathPart]: value,
-      };
-    });
-  } else {
-    pathArr.forEach((pathPart, index) => {
-      if (index === pathPart.length - 1) {
-        finalResponse[pathPart] = value;
-      }
-      if (!finalResponse[pathPart]) {
-        finalResponse[pathPart] = { };
-      }
-    })
-  }
+  pathArr.forEach((pathPart, index) => {
+    if (index === pathArr.length - 1) {
+      tempObj[pathPart] = value;
+    }
+    if (!tempObj[pathPart]) {
+      tempObj[pathPart] = {};
+    }
+
+    tempObj = tempObj[pathPart];
+  });
 
   return finalResponse;
-}
+};
 
-export const getObjValue = (obj: any, path: string): any => {
+export const getPropDeep = (obj: any, path: string): any => {
+  if (!path) {
+    return obj;
+  }
+
+  if (!obj) {
+    return undefined;
+  }
+
   const pathArr = path.split('.');
   let value = obj;
 
@@ -43,4 +46,4 @@ export const getObjValue = (obj: any, path: string): any => {
   }
 
   return value;
-}
+};
