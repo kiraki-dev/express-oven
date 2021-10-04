@@ -1,0 +1,68 @@
+{
+  "type": "object",
+  "properties": {
+    "operation": {
+      "type": "string",
+      "const": "create"
+    },
+    "uidField": {
+      "$ref": "uid-field-config.schema.json"
+    },
+    "save": {
+      "type": "boolean"
+    },
+    "returnEntity": {
+      "type": "boolean"
+    },
+    "dataJsonPath": {
+      "type": "string"
+    },
+    "responseModel": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "paramMatch": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "properties": {
+        "withDefaultValues": {
+          "type": "object",
+          "properties": {
+          }
+        }
+      }
+    },
+    "handleFile": {
+      "type": "object",
+      "properties": {
+        "sourceField": {
+          "type": "string"
+        },
+        "directoryPath": {
+          "type": "string"
+        },
+        "returnAsArray": {
+          "type": "boolean"
+        },
+        "exportedFields": {
+          "type": "object",
+          "properties": {
+            "fileName": {
+              "type": "string"
+            },
+            "fileSize": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["sourceField", "directoryPath"]
+      }
+    }
+  },
+  "required": ["operation", "uidField", "save", "dataJsonPath", "returnEntity", "handleFile"]
+}

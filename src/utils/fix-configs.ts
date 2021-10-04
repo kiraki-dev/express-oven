@@ -3,8 +3,15 @@ import { ExpressOvenConfig, PartialExpressOvenConfig } from '../create-express-o
 import { DEFAULT_CONFIGS, isHttpMethod } from '../constants';
 import { HttpMethod } from '../typing-utils/api-config';
 import {
-  Operation, PartialCreateOperationConfig, PartialDeleteOperationConfig, PartialOperationConfig, PartialPatchOperationConfig,
-  PartialReadListOperationConfig, PartialReadOneOperationConfig, PartialUpdateOperationConfig,
+  Operation,
+  PartialCreateOperationConfig,
+  PartialCreateOperationConfigWithFile,
+  PartialDeleteOperationConfig,
+  PartialOperationConfig,
+  PartialPatchOperationConfig,
+  PartialReadListOperationConfig,
+  PartialReadOneOperationConfig,
+  PartialUpdateOperationConfig,
 } from '../typing-utils/operations';
 import { DefaultConfigs } from '../typing-utils/default-config';
 
@@ -33,6 +40,9 @@ export const fixConfigs = (configs: PartialExpressOvenConfig): ExpressOvenConfig
       }
 
       if (operationConfig.operation === 'create') {
+        if ((operationConfig as PartialCreateOperationConfigWithFile).handleFile) {
+          fixCreateOperationWithFile(operationConfig as PartialCreateOperationConfigWithFile, fixedConfigs.defaultConfigs);
+        }
         fixCreateOperation(operationConfig, fixedConfigs.defaultConfigs);
       } else if (operationConfig.operation === 'read') {
         fixReadOperation(operationConfig, fixedConfigs.defaultConfigs);
@@ -43,7 +53,7 @@ export const fixConfigs = (configs: PartialExpressOvenConfig): ExpressOvenConfig
       } else if (operationConfig.operation === 'delete') {
         fixDeleteOperation(operationConfig, fixedConfigs.defaultConfigs);
       }
-      fixOtherConfigs(operationConfig, fixedConfigs.defaultConfigs);
+      fixCommonConfigs(operationConfig, fixedConfigs.defaultConfigs);
     });
   });
 
@@ -87,7 +97,14 @@ const fixDeleteOperation = (config: PartialDeleteOperationConfig, defaultConfigs
   config.returnEntity = config.returnEntity || defaultConfigs.returnEntity;
 };
 
-const fixOtherConfigs = (config: PartialOperationConfig, defaultConfigs: DefaultConfigs) => {
+const fixCreateOperationWithFile = (config: PartialCreateOperationConfigWithFile, defaultConfigs: DefaultConfigs) => {
+  config.handleFile = {
+    ...config.handleFile,
+    outputDirectoryPath: config.handleFile.outputDirectoryPath || defaultConfigs.handleFile.directoryPath,
+  };
+};
+
+const fixCommonConfigs = (config: PartialOperationConfig, defaultConfigs: DefaultConfigs) => {
   config.delay = config.delay || defaultConfigs.delay;
   config.responseModel = merge(defaultConfigs.responseModel, config.responseModel || {});
 };

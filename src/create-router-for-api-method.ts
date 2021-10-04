@@ -1,5 +1,6 @@
-import { HttpMethod } from './typing-utils/api-config';
 import { Router } from 'express';
+import multer from 'multer';
+import { HttpMethod } from './typing-utils/api-config';
 import { isHttpMethod } from './constants';
 import { getCreateEntityHandler } from './operations/get-create-entity.handler';
 import { DataAdapterStorage } from './utils/create-data-adapter-storage';
@@ -11,6 +12,7 @@ import { getReadOneEntityHandler } from './operations/get-read-one-entity.handle
 import { getDeleteEntityHandler } from './operations/get-delete-entity.handler';
 import {
   isCreateOperation,
+  isCreateOperationWithFile,
   isDeleteOperation,
   isPatchOperation,
   isReadListOperation,
@@ -18,6 +20,7 @@ import {
   isUpdateOperation,
 } from './utils/operation-config-utils';
 import { getPatchEntityHandler } from './operations/get-patch-entity.handler';
+import { getCreateEntityWithFileHandler } from './operations/get-create-entity-with-file.handler';
 
 export const createRouterForApiMethod = (
   url: string,
@@ -31,7 +34,12 @@ export const createRouterForApiMethod = (
       throw new Error(`Unknown method ${method} ${url}`);
     }
 
-    router[method as HttpMethod](url, getOperationHandler(methodConfig, dataAdapterStorage));
+    if(isCreateOperationWithFile(methodConfig)) {
+      const upload = multer({ dest: methodConfig.handleFile.outputDirectoryPath })
+      router[method as HttpMethod](url, upload.array(methodConfig.handleFile.sourceField), getCreateEntityWithFileHandler(methodConfig, dataAdapterStorage));
+    } else {
+      router[method as HttpMethod](url, getOperationHandler(methodConfig, dataAdapterStorage));
+    }
 
     console.info('[INFO]',
       `hit ${method.toUpperCase()} ${getAppUrl(url)} for ${methodConfig.operation.toUpperCase()} operation`);

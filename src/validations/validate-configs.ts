@@ -2,7 +2,9 @@ import { ExpressOvenConfig } from '../create-express-oven-routes';
 import { ajv } from './ajv-config';
 import { isHttpMethod } from '../constants';
 import {
-  isCreateOperation, isDeleteOperation, isPatchOperation,
+  isCreateOperation,
+  isDeleteOperation,
+  isPatchOperation,
   isReadListOperation,
   isReadOneOperation,
   isUpdateOperation,
