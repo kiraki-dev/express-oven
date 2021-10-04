@@ -10,8 +10,11 @@ export const DEFAULT_CONFIGS: DefaultConfigs = {
   save: false,
   returnEntity: true,
   delay: 300,
+  handleFile: {
+    directoryPath: 'data/uploads',
+  },
   responseModel: {
-    paths: { },
+    paths: {},
   },
 };
 

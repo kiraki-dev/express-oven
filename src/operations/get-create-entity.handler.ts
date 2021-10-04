@@ -15,6 +15,7 @@ export const getCreateEntityHandler = (
 
   return async (req: Request, res: Response) => {
     const responseBuilder = createResponseBuilder(methodConfigs.responseModel);
+
     const newDataItem = {
       [name]: type === 'number' ? getNumberId(dataAdapter.getAll(), name) : genUid(),
       ...req.body,

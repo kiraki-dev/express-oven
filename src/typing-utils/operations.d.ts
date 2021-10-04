@@ -15,6 +15,18 @@ export interface CreateOperationConfig {
   };
 }
 
+export interface CreateOperationWithFileConfig extends CreateOperationConfig {
+  handleFile: {
+    sourceField: string;
+    outputDirectoryPath: string;
+    exportedFields?: {
+      fileName: string;
+      fileSize: string;
+    }
+    returnAsArray?: boolean;
+  };
+}
+
 export interface ReadOneOperationConfig {
   operation: 'read';
   readOne: true;
@@ -87,12 +99,14 @@ export type OperationConfig = (
   ReadListOperationConfig |
   UpdateOperationConfig |
   PatchOperationConfig |
-  DeleteOperationConfig
+  DeleteOperationConfig |
+  CreateOperationWithFileConfig
 );
 
 export type Operation = OperationConfig['operation'];
 
 export type PartialCreateOperationConfig = WithOptional<CreateOperationConfig, 'operation' | 'returnEntity' | 'save' | 'delay' | 'responseModel' | 'extensions'>;
+export type PartialCreateOperationConfigWithFile = WithOptional<CreateOperationWithFileConfig, 'operation' | 'returnEntity' | 'save' | 'delay' | 'responseModel'>;
 export type PartialReadOneOperationConfig = WithOptional<ReadOneOperationConfig, 'operation' | 'readOne' | 'delay' | 'responseModel' | 'extensions'>;
 export type PartialReadListOperationConfig = WithOptional<ReadListOperationConfig, 'operation' | 'readOne' | 'delay' | 'responseModel' | 'extensions'>;
 export type PartialUpdateOperationConfig = WithOptional<UpdateOperationConfig, 'operation' | 'returnEntity' | 'save' | 'delay' | 'responseModel' | 'extensions'>;
@@ -105,5 +119,6 @@ export type PartialOperationConfig = (
   PartialReadListOperationConfig |
   PartialUpdateOperationConfig |
   PartialPatchOperationConfig |
-  PartialDeleteOperationConfig
+  PartialDeleteOperationConfig |
+  PartialCreateOperationConfigWithFile
 );
