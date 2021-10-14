@@ -10,7 +10,8 @@
     "build": "microbundle-crl --no-compress",
     "build:dev": "microbundle-crl",
     "test": "jest tests/*",
-    "example": "yarn --cwd example"
+    "example": "yarn --cwd example",
+    "prepublish": "rm -rf dist && yarn build"
   },
   "repository": {
     "type": "git",
