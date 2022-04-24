@@ -1,7 +1,7 @@
 import { IdType } from './misc';
 
 export interface DocRef<T> {
-  id: IdType;
+  readonly id: IdType;
   delete: () => Promise<T>;
   update: (data: Partial<T>) => Promise<void>;
   get: () => Promise<T>;
@@ -10,5 +10,5 @@ export interface DocRef<T> {
 
 export interface DataAdapter<T> {
   query: () => Promise<DocRef<T>[]>;
-  ref: (id: IdType) => DocRef<T>;
+  ref: (id?: IdType) => DocRef<T>;
 }
