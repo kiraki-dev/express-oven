@@ -76,7 +76,7 @@ export const createFsAdapter = <T extends Record<any, any>>(
   }
 }
 
-type GetDocRefProps<T extends {}> = Pick<CreateFsAdapterOptions<T>, 'shouldUpdateFile'> & {
+type GetDocRefProps<T extends {}> = {
   idField: keyof T;
   idFieldType: IdFieldType;
   id: IdType;
