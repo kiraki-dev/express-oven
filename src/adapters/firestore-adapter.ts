@@ -1,30 +1,40 @@
-import { raw } from "express";
-import firebase from "firebase/compat";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 import { DataAdapter, DocRef } from "../typing-utils/data-adapter";
-import { IdType } from "../typing-utils/misc";
 import { Optional } from "../typing-utils/typings";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBT5HQj-AFhbevXHqzx71Oi6z3yRItEJZ0",
+  authDomain: "express-oven-test.firebaseapp.com",
+  projectId: "express-oven-test",
+  storageBucket: "express-oven-test.appspot.com",
+  messagingSenderId: "618707235969",
+  appId: "1:618707235969:web:eab802289e2279ef060980"
+};
+
+firebase.initializeApp(firebaseConfig);
 
 type GetDocRefProps<T extends {}> = {
   idField: keyof T;
   id: string;
   collectionPath: string;
   item?: Optional<T>;
-  shouldUpdateFile?: boolean;
+  shouldUpdateCollection?: boolean;
 }
 
 interface FirebaseFirestoreAdapterOptions<T> {
   idField: keyof T;
-  shouldUpdateFile?: boolean;
+  shouldUpdateCollection?: boolean;
 }
 
-export const createFirebaseFirestoreAdapter = <T>(
+export const createFirestoreAdapter = <T extends {}>(
   collectionPath: string,
   {
     idField,
-    shouldUpdateFile = false,
+    shouldUpdateCollection = false,
   }: FirebaseFirestoreAdapterOptions<T>
 ): DataAdapter<T> => {
-  const ref = (id: IdType) => getDocRef<T>({ id: id as string, idField, collectionPath, });
+  const ref = (id: any) => getDocRef<T>({ id, idField, collectionPath, shouldUpdateCollection });
 
   const query = async () => {
     const collectionRef = await firebase
@@ -32,9 +42,9 @@ export const createFirebaseFirestoreAdapter = <T>(
     .collection(collectionPath)
     .get();
 
-    const data = collectionRef.docs.map((doc) => doc.data() as T);
+    const data = collectionRef.docs.map((doc) => doc.data() as unknown as T);
 
-    return data.map((item) => getDocRef<T>({ id: item[idField] as unknown as string, item, idField, collectionPath, shouldUpdateFile }));
+    return data.map((item) => getDocRef<T>({ id: item[idField] as unknown as string, item, idField, collectionPath, shouldUpdateCollection }));
   }
 
   return {
@@ -43,12 +53,12 @@ export const createFirebaseFirestoreAdapter = <T>(
   }
 }
 
-const getDocRef = <T>({
+const getDocRef = <T extends {}>({
   idField,
   id,
   item,
   collectionPath,
-  shouldUpdateFile,
+  shouldUpdateCollection,
 }: GetDocRefProps<T>): DocRef<T> => {
   let lastData: Optional<T> = item ?? null;
   let itemId = id ?? null;
@@ -63,7 +73,8 @@ const getDocRef = <T>({
       .doc();
 
       lastData = { ...newData, [idField]: dataRef.id };
-      shouldUpdateFile && await dataRef.set(lastData);
+      itemId = dataRef.id;
+      shouldUpdateCollection && await dataRef.set(lastData);
     },
     get: async () => {
       if (!itemId) {
@@ -94,7 +105,7 @@ const getDocRef = <T>({
       const deletingItem = lastData ? lastData : (await dataRef.get()).data() as T;
       lastData = null;
 
-      shouldUpdateFile && dataRef.delete();
+      shouldUpdateCollection && dataRef.delete();
       return deletingItem;
     },
     update: async (partialData: Partial<T>) => {
@@ -107,7 +118,7 @@ const getDocRef = <T>({
       .collection(collectionPath)
       .doc(itemId);
 
-      shouldUpdateFile && await dataRef.update(lastData);
+      shouldUpdateCollection && await dataRef.update(lastData);
     },
   });
 }

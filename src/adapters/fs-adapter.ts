@@ -83,7 +83,7 @@ type GetDocRefProps<T extends {}> = {
   item?: Optional<T>
 }
 
-const getDocRef = <T>({
+const getDocRef = <T extends {}>({
   idField,
   idFieldType,
   id,

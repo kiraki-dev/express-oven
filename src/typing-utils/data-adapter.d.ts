@@ -10,5 +10,5 @@ export interface DocRef<T> {
 
 export interface DataAdapter<T> {
   query: () => Promise<DocRef<T>[]>;
-  ref: (id: IdType) => DocRef<T>;
+  ref: (id?: IdType) => DocRef<T>;
 }

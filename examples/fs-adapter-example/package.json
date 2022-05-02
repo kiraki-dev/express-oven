@@ -1,5 +1,5 @@
 {
-  "name": "express-oven-example",
+  "name": "express-oven-fs-adapter-example",
   "version": "0.0.1",
   "scripts": {
     "start": "node --require ts-node/register index.ts",
@@ -12,13 +12,13 @@
     "url": "https://github.com/kiraki-dev/express-oven.git"
   },
   "keywords": [
-    "express-oven-example"
+    "express-oven-fs-adapter-example"
   ],
   "author": "hakobpogh",
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "express-oven": "link:.."
+    "express-oven": "link:../.."
   },
   "devDependencies": {
     "ts-node": "^9.1.1",

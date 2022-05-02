@@ -1,19 +1,30 @@
-import { createExpressOvenRoutes } from 'express-oven';
+import { createEntity, createFirestoreAdapter, createRouteHandler  } from 'express-oven';
 import express, { json, raw, text, urlencoded } from 'express';
-import { createEntity, createFsAdapter, createRouteHandler } from "../src";
+import firebase from 'firebase/compat/app';
+
+
+// const firebaseConfig = {
+//   apiKey: "AIzaSyBT5HQj-AFhbevXHqzx71Oi6z3yRItEJZ0",
+//   authDomain: "express-oven-test.firebaseapp.com",
+//   projectId: "express-oven-test",
+//   storageBucket: "express-oven-test.appspot.com",
+//   messagingSenderId: "618707235969",
+//   appId: "1:618707235969:web:eab802289e2279ef060980"
+// };
+
+// firebase.initializeApp(firebaseConfig);
+
 
 const app = express();
 
 app.use(json(), raw(), text());
 app.use(urlencoded({ extended: true }))
 
-// app.use(createExpressOvenRoutes());
-const usersAdapter = createFsAdapter(
-  './data/users.json',
+const usersAdapter = createFirestoreAdapter(
+  'users',
   {
     idField: "uid",
-    idFieldType: "number",
-    shouldUpdateFile: true,
+    ց: true,
   })
 const userEntity  = createEntity(usersAdapter, { idField: "uid" });
 app.get('/users', createRouteHandler(userEntity.readMany))
