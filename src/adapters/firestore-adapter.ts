@@ -1,18 +1,10 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import { DataAdapter, DocRef } from "../typing-utils/data-adapter";
+import { AndQuery, OrQuery } from "../queries/query";
 import { Optional } from "../typing-utils/typings";
+import { getFirebaseQuery } from "../queries/get-firebase-query";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBT5HQj-AFhbevXHqzx71Oi6z3yRItEJZ0",
-  authDomain: "express-oven-test.firebaseapp.com",
-  projectId: "express-oven-test",
-  storageBucket: "express-oven-test.appspot.com",
-  messagingSenderId: "618707235969",
-  appId: "1:618707235969:web:eab802289e2279ef060980"
-};
-
-firebase.initializeApp(firebaseConfig);
 
 type GetDocRefProps<T extends {}> = {
   idField: keyof T;
@@ -28,21 +20,28 @@ interface FirebaseFirestoreAdapterOptions<T> {
 }
 
 export const createFirestoreAdapter = <T extends {}>(
+  firebaseConfig: Object,
   collectionPath: string,
   {
     idField,
     shouldUpdateCollection = false,
   }: FirebaseFirestoreAdapterOptions<T>
 ): DataAdapter<T> => {
+  firebase.initializeApp(firebaseConfig);
+
   const ref = (id: any) => getDocRef<T>({ id, idField, collectionPath, shouldUpdateCollection });
 
-  const query = async () => {
-    const collectionRef = await firebase
+  const query = async (query?: AndQuery | OrQuery | undefined) => {
+    const collectionRef = firebase
     .firestore()
-    .collection(collectionPath)
-    .get();
+    .collection(collectionPath);
 
-    const data = collectionRef.docs.map((doc) => doc.data() as unknown as T);
+    if(query) {
+      getFirebaseQuery(collectionRef, query)
+    }
+    const snapshot = await collectionRef.get();
+
+    const data = snapshot.docs.map((doc) => doc.data() as unknown as T);
 
     return data.map((item) => getDocRef<T>({ id: item[idField] as unknown as string, item, idField, collectionPath, shouldUpdateCollection }));
   }

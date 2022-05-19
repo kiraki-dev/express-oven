@@ -1,5 +1,5 @@
 import { getContext } from "../context-handler";
-import { Entity, ReadConfigs } from "../typing-utils/entity";
+import { Entity } from "../typing-utils/entity";
 import { DataAdapter, DocRef } from "../typing-utils/data-adapter";
 import { IdType, KeyWithIdValue } from "../typing-utils/misc";
 
@@ -39,13 +39,13 @@ interface Interceptors<T> {
   readMany?: (
     model: any,
     handlers: {
-      sendResponse: (options?: SendResponseHandlerOptions) => Promise<void>,
+      sendResponse: (item: any, options?: SendResponseHandlerOptions) => Promise<void>,
     },
   ) => Promise<T>;
   read?: (
     model: any,
     handlers: {
-      sendResponse: (id: IdType, options?: SendResponseHandlerOptions) => Promise<void>,
+      sendResponse: (item: any, options?: SendResponseHandlerOptions) => Promise<void>,
     },
   ) => Promise<T>;
 }
@@ -60,18 +60,13 @@ export const createEntity = <T extends Record<any, any>>(
   interceptors?: Interceptors<T>,
 ): Entity<T> => {
   const create = async (model?: any) => {
-    const { req, res } = getContext();
+    const { req } = getContext();
 
     const save = async (data: T) => {
       const docRef = adapter.ref();
       await docRef.set(data);
 
       return docRef;
-    }
-
-    const sendResponse = async (data: any, options?: SendResponseHandlerOptions) => {
-      options?.statusCode && res.status(options.statusCode);
-      data ? res.send(data) : res.end();
     }
 
     if (interceptors?.create) {
@@ -83,18 +78,14 @@ export const createEntity = <T extends Record<any, any>>(
   };
 
   const update = async (update?: any) => {
-    const { req, res } = getContext();
+    const { req, options: { getEntityId } } = getContext();
 
     const save = async (data: T) => {
-      const docRef = adapter.ref(data[configs.idField]);
+      const id = getEntityId?.(req) ?? data[configs.idField];
+      const docRef = adapter.ref(id);
       await docRef.update(data);
 
       return docRef;
-    }
-
-    const sendResponse = async (data: any, options?: SendResponseHandlerOptions) => {
-      options?.statusCode && res.status(options.statusCode);
-      data ? res.send(data) : res.end();
     }
 
     if (interceptors?.update) {
@@ -106,19 +97,15 @@ export const createEntity = <T extends Record<any, any>>(
   };
 
   const patch = async (update?: any) => {
-    const { req, res } = getContext();
+    const { req, options: { getEntityId } } = getContext();
 
     const save = async (data: Partial<T>) => {
-      const docRef = adapter.ref(data[configs.idField]);
+      const id = getEntityId?.(req) ?? data[configs.idField];
+      const docRef = adapter.ref(id);
       const item = await docRef.get();
       await docRef.update({ ...data, ...item });
 
       return docRef;
-    }
-
-    const sendResponse = async (data: any, options?: SendResponseHandlerOptions) => {
-      options?.statusCode && res.status(options.statusCode);
-      data ? res.send(data) : res.end();
     }
 
     if (interceptors?.patch) {
@@ -130,54 +117,38 @@ export const createEntity = <T extends Record<any, any>>(
   };
 
   const readMany = async () => {
-    const { req, res } = getContext();
-    const sendResponse = async (options?: SendResponseHandlerOptions) => {
-      const docRefs = await adapter.query();
-      const data = await Promise.all(docRefs.map((ref) => ref.get()));
-      options?.statusCode && res.status(options.statusCode);
-      data ? res.send(data) : res.end();
-    }
+    const { req, options: { getQuery } } = getContext();
+    const query = getQuery?.(req);
+    const docRefs = await adapter.query(query);
+    const data = await Promise.all(docRefs.map((ref) => ref.get()));
 
     if (interceptors?.readMany) {
-      await interceptors.readMany(req.body, { sendResponse });
+      await interceptors.readMany(data, { sendResponse });
     } else {
-      await sendResponse();
+      await sendResponse(data);
     }
   };
 
-  const read = async (readConfigs?: ReadConfigs) => {
-    const { req, res } = getContext();
-
-    const sendResponse = async (id: IdType, options?: SendResponseHandlerOptions) => {
-      const docRef = await adapter.ref(id);
-      const data = await docRef.get();
-      options?.statusCode && res.status(options.statusCode);
-      data ? res.send(data) : res.end();
-    }
+  const read = async () => {
+    const { req, options: { getEntityId } } = getContext();
+    const id = getEntityId(req);
+    const docRef = await adapter.ref(id);
+    const data = await docRef.get();
 
     if (interceptors?.read) {
-      await interceptors.read(
-        req.params[readConfigs?.paramMatch[configs.idField as string] ?? configs.idField], { sendResponse }
-      );
+      await interceptors.read(data, { sendResponse });
     } else {
-      await sendResponse(
-        req.params[readConfigs?.paramMatch[configs.idField as string] ?? configs.idField]
-      );
+      await sendResponse(data);
     }
   }
 
   const deleteHandler = async () => {
-    const { req, res } = getContext();
+    const { req } = getContext();
     const save = async (id: IdType) => {
       const docRef = adapter.ref(id);
       await docRef.delete();
 
       return docRef;
-    }
-
-    const sendResponse = async (data: any, options?: SendResponseHandlerOptions) => {
-      options?.statusCode && res.status(options.statusCode);
-      data ? res.send(data) : res.end();
     }
 
     if (interceptors?.delete) {
@@ -196,4 +167,10 @@ export const createEntity = <T extends Record<any, any>>(
     read,
     delete: deleteHandler,
   }
-}
+};
+
+const sendResponse = async (data: any, options?: SendResponseHandlerOptions) => {
+  const { res } = getContext();
+  options?.statusCode && res.status(options.statusCode);
+  data ? res.send(data) : res.end();
+};

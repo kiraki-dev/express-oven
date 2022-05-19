@@ -4,7 +4,9 @@ import { getNumberId } from "../utils/misc";
 import { resolveProjectPath } from '../utils/path-utils';
 import { readFile, writeFile } from 'fs/promises';
 import { Optional } from '../typing-utils/typings';
+import { AndQuery, OrQuery } from "../queries/query";
 import { IdFieldType, IdType, KeyWithIdValue } from "../typing-utils/misc";
+import { getFsQueriedData } from "../queries/get-fs-query";
 
 interface CreateFsAdapterOptions<T> {
   idField: KeyWithIdValue<T>;
@@ -54,8 +56,12 @@ export const createFsAdapter = <T extends Record<any, any>>(
 ): DataAdapter<T> => {
   const fileDataApi = createFileDataApi<T>(jsonPath, shouldUpdateFile);
 
-  const query = async () => {
-    const data = await fileDataApi.read();
+  const query = async (query?: AndQuery | OrQuery | undefined) => {
+    let data = await fileDataApi.read();
+
+    if(query) {
+      data = getFsQueriedData(data, query);
+    }
 
     return data.map((item) => {
       const id = item[idField];

@@ -1,4 +1,5 @@
 import { IdType } from './misc';
+import { AndQuery, OrQuery } from '../queries/query';
 
 export interface DocRef<T> {
   readonly id: IdType;
@@ -9,6 +10,6 @@ export interface DocRef<T> {
 }
 
 export interface DataAdapter<T> {
-  query: () => Promise<DocRef<T>[]>;
+  query: (query?: AndQuery | OrQuery | undefined) => Promise<DocRef<T>[]>;
   ref: (id?: IdType) => DocRef<T>;
 }
